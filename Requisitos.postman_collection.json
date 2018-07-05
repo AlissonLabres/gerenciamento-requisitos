@@ -1,0 +1,1294 @@
+{
+	"info": {
+		"_postman_id": "3ef55c37-0e07-4e63-9d17-206256b85021",
+		"name": "Requisitos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"description": "CRUD Usuario",
+			"item": [
+				{
+					"name": "Cria usuário 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Alisson Labres\",\n    \"email\" : \"alisson@gmail.com\",\n    \"senha\" : \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario"
+							]
+						},
+						"description": "Criar usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Cria usuário 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Diogo Augusto Pereira Barros\",\n    \"email\" : \"diogo@gmail.com\",\n    \"senha\" : \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos usuarios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"list"
+							]
+						},
+						"description": "Buscar todos os usuários cadastrados"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar usuário",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Alisson Labres Gimenes\",\n    \"email\" : \"alisson@gmail.com\",\n    \"senha\" : \"1234567890\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"alisson@gmail.com\",\n\t\"senha\": \"1234567890\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"auth"
+							]
+						},
+						"description": "Pegar token de usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Auth 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"diogo@gmail.com\",\n\t\"senha\": \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"auth"
+							]
+						},
+						"description": "Pegar token de usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Valida senha",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"alisson@gmail.com\",\n\t\"senha\": \"0987654321\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/valida-senha/15E2B",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"valida-senha",
+								"15E2B"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Esqueci senha",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"alisson@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/esqueceu-senha",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"esqueceu-senha"
+							]
+						},
+						"description": "Esqueci senha gerando código"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Integrante",
+			"description": "CRUD Integrante",
+			"item": [
+				{
+					"name": "Adicionar Integrante Projeto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"idUsuario\": 1,\n\t\"perfilIntegrante\": \"Desenvolvedor\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/1/integrante",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"1",
+								"integrante"
+							]
+						},
+						"description": "Adicionar novo integrante em projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar Integrante Projeto 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"perfilIntegrante\": \"Desenvolvedor\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/2/projeto/1/integrante",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"2",
+								"projeto",
+								"1",
+								"integrante"
+							]
+						},
+						"description": "Adicionar novo integrante em projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos integrates projeto 1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/integrante/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"integrante",
+								"list"
+							]
+						},
+						"description": "Buscar todos integrantes do Projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos integrates projeto 2",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/2/projeto/1/integrante/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"2",
+								"projeto",
+								"1",
+								"integrante",
+								"list"
+							]
+						},
+						"description": "Buscar todos integrantes do projeto 02\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico integrante projeto 01",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/integrante/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"integrante",
+								"1"
+							]
+						},
+						"description": "Buscar um integrante especifico pelo projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico integrante projeto 02",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/2/projeto/1/integrante/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"2",
+								"projeto",
+								"1",
+								"integrante",
+								"2"
+							]
+						},
+						"description": "Buscar um integrante especifico pelo projeto 02"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir integrante",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/1/integrante/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"1",
+								"integrante",
+								"2"
+							]
+						},
+						"description": "Excluir integrante especifico"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Integrante",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"perfilIntegrante\": \"Analista\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/2/projeto/1/integrante/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"2",
+								"projeto",
+								"1",
+								"integrante",
+								"1"
+							]
+						},
+						"description": "Alterar integrante"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Projeto",
+			"description": "CRUD projeto\n",
+			"item": [
+				{
+					"name": "Criar Projeto 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"PBL\",\n  \"dataInicio\": \"10/06/2018\",\n  \"dataFim\": \"26/06/2018\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto"
+							]
+						},
+						"description": "Criar projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Projeto 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Gerenciamento de requisitos\",\n  \"dataInicio\": \"23/06/2018\",\n  \"dataFim\": \"26/07/2018\",\n  \"integrantes\": [\n  \t{ \"usuario\" : { \"id\": 2 } }\n  ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto"
+							]
+						},
+						"description": "Criar projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos projetos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"list"
+							]
+						},
+						"description": "Buscar todos os projetos"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos projetos usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projetos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projetos"
+							]
+						},
+						"description": "Listar todos os projetos do usuário selecionado."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico projeto",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1"
+							]
+						},
+						"description": "Buscar por projeto especifico"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico projeto 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"2"
+							]
+						},
+						"description": "Buscar por projeto especifico 02"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir projeto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"1"
+							]
+						},
+						"description": "Excluir um projetos especifico"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Projeto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"ALTERAR PROJETO\",\n\t\"dataInicio\": \"15/06/2018\",\n\t\"dataFim\": \"26/06/2018\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1"
+							]
+						},
+						"description": "Alterar projeto"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requisito",
+			"description": "CRUD requisito",
+			"item": [
+				{
+					"name": "Criar Requisito",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idRequisito\": \"1\",\n  \"nome\": \"Requisito\",\n  \"descricao\": \"Manter requisito em um projeto.\",\n  \"importancia\": \"Importante\",\n  \"fonte\": \"Cliente\",\n  \"categoria\": \"Funcional\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/requisito",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito"
+							]
+						},
+						"description": "Criar um requisito"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos requisitos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/requisito/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"list"
+							]
+						},
+						"description": "Buscar todos os requisitos"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar requisito especifico",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/requisito/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1"
+							]
+						},
+						"description": "Buscar um requisito especifico dentro de um projeto\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar requisito",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idRequisito\": \"1.3\",\n  \"nome\": \"Requisito\",\n  \"descricao\": \"Permitir apenas Gerente alterar requisito.\",\n  \"importancia\": \"Importante\",\n  \"fonte\": \"Cliente\",\n  \"categoria\": \"Funcional\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/1/requisito/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"1",
+								"requisito",
+								"1"
+							]
+						},
+						"description": "Alterar requisito"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir requisito",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/1/requisito/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"1",
+								"requisito",
+								"1"
+							]
+						},
+						"description": "Excluir requisito"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Atividade",
+			"description": "Todos os serviços de uma Atividade.",
+			"item": [
+				{
+					"name": "Criar atividade 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Criar Atividade\",\n  \"descricao\": \"Deverá criar a vinculação de uma atividade a um requisito\",\n  \"status\": \"Desenvolvendo\",\n  \"dataInicio\": \"20/06/2018\",\n  \"dataFim\": \"18/07/2018\",\n  \"idDesenvolvedor\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/requisito/1/atividade",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade"
+							]
+						},
+						"description": "Criar atividade 01 no requisito e projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Atividades requisito",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer ca9309587b72995017c6ebaf423d80cee895de6bc7deb836940817ccef3e8d1e"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/requisito/1/atividade/listaRequisito",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade",
+								"listaRequisito"
+							]
+						},
+						"description": "Buscar todas as atividades de um requisito"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Atividades projeto",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer ca9309587b72995017c6ebaf423d80cee895de6bc7deb836940817ccef3e8d1e"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/requisito/0/atividade/listaProjeto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"0",
+								"atividade",
+								"listaProjeto"
+							]
+						},
+						"description": "Buscar todas as atividades de um projeto\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar atividade especifica requisito",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization]",
+								"value": "Bearer 1a1fda15162d31d64c300551184153fd8b3053cadf14a219d42a25d28d0daff6"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/usuario/1/projeto/1/requisito/1/atividade/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade",
+								"1"
+							]
+						},
+						"description": "Buscar atividade especifica por id de um requisito"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar atividade 1",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Alterar Atividade\",\n\t\"descricao\": \"Deverá alterar a atividade criada\",\n\t\"status\": 2,\n\t\"dataInicio\": \"2018-06-20\",\n\t\"dataFim\": \"2018-07-18\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/1/requisito/1/atividade/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade",
+								"1"
+							]
+						},
+						"description": "Atividade atividade 01 no requisito e projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir atividade 1",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Alterar Atividade\",\n\t\"descricao\": \"Deverá alterar a atividade criada\",\n\t\"status\": 2,\n\t\"dataInicio\": \"2018-06-20\",\n\t\"dataFim\": \"2018-07-18\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/requisitos-0.0.1/api/projeto/1/requisito/1/atividade/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requisitos-0.0.1",
+								"api",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade",
+								"1"
+							]
+						},
+						"description": "Excluir atividade 01"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
