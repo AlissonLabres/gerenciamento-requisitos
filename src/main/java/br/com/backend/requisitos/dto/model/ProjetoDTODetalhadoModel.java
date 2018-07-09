@@ -4,24 +4,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import br.com.backend.requisitos.dto.CasoDeUsoDTO;
-import br.com.backend.requisitos.entity.CasoDeUso;
+import br.com.backend.requisitos.entity.Atividade;
 import br.com.backend.requisitos.entity.Integrante;
 import br.com.backend.requisitos.entity.Requisito;
 
 public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
+	private String perfilIntegranteProjeto;
 	private List<IntegranteDTOModel> integrantes;
 	private List<RequisitoDTOModel> requisito;
-	private List<CasoDeUsoDTO> casosDeUso;
+	private List<AtividadeDTOModel> atividades;
 
 	public ProjetoDTODetalhadoModel() {
 	}
 
-	public ProjetoDTODetalhadoModel(Integer id, String nome, Calendar dataInicio, Calendar dataFim,
-			List<Requisito> requisitos, List<CasoDeUso> casosDeUso, List<Integrante> integrantes) {
+	public ProjetoDTODetalhadoModel(Integer id, String nome, Calendar dataInicio, Calendar dataFim, Integrante integranteProjeto, 
+			List<Requisito> requisitos, List<Integrante> integrantes) {
 		super(id, nome, dataInicio, dataFim);
-		requisito = listarRequisitos(requisitos);
-		this.casosDeUso = listarCasosDeUso(casosDeUso);
+		this.perfilIntegranteProjeto = setIntegrante(integranteProjeto);
+		this.requisito = listarRequisitos(requisitos);
+		this.atividades = listarAtividades(requisitos);
 		this.integrantes = listarIntegrantes(integrantes);
 	}
 
@@ -41,12 +42,24 @@ public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 		this.requisito = requisito;
 	}
 
-	public List<CasoDeUsoDTO> getCasosDeUso() {
-		return casosDeUso;
+	public List<AtividadeDTOModel> getAtividades() {
+		return atividades;
 	}
 
-	public void setCasosDeUso(List<CasoDeUsoDTO> casosDeUso) {
-		this.casosDeUso = casosDeUso;
+	public void setAtividades(List<AtividadeDTOModel> atividades) {
+		this.atividades = atividades;
+	}
+
+	public String getPerfilIntegranteProjeto() {
+		return perfilIntegranteProjeto;
+	}
+
+	public void setPerfilIntegranteProjeto(String perfilIntegranteProjeto) {
+		this.perfilIntegranteProjeto = perfilIntegranteProjeto;
+	}
+
+	private String setIntegrante(Integrante i) {
+		return i.getPerfilIntegranteProjeto().getValue();
 	}
 
 	private List<RequisitoDTOModel> listarRequisitos(List<Requisito> listaRequisitos) {
@@ -62,15 +75,30 @@ public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 		return requisitosDTO;
 	}
 
-	private List<CasoDeUsoDTO> listarCasosDeUso(List<CasoDeUso> listaCasosDeUso) {
-		if (listaCasosDeUso.isEmpty()) {
+	private List<AtividadeDTOModel> listarAtividades(List<Requisito> requisitos) {
+		if (requisitos.isEmpty())
 			return null;
+
+		List<AtividadeDTOModel> atividadeDTO = new ArrayList<AtividadeDTOModel>();
+		for(Requisito r : requisitos) {
+			for(Atividade a : r.getAtividades()) {
+				atividadeDTO.add(
+					new AtividadeDTOModel(
+						a.getId(),
+						a.getNome(),
+						a.getDescricao(),
+						a.getStatus().getValue(),
+						a.getDataInicio(),
+						a.getDataFim(),
+						a.getDataConclusao(),
+						a.getCriador(),
+						a.getDesenvolvedores().get(a.getDesenvolvedores().size() - 1)
+					)
+				);
+			}
 		}
-		List<CasoDeUsoDTO> casoDeUsoDTOs = new ArrayList<CasoDeUsoDTO>();
-		for (CasoDeUso casoDeUso : listaCasosDeUso) {
-			casoDeUsoDTOs.add(new CasoDeUsoDTO(casoDeUso));
-		}
-		return casoDeUsoDTOs;
+
+		return atividadeDTO;
 	}
 
 	private List<IntegranteDTOModel> listarIntegrantes(List<Integrante> listaIngrantes) {

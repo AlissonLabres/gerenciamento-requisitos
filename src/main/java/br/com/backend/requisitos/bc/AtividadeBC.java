@@ -1,5 +1,13 @@
 package br.com.backend.requisitos.bc;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+
+import org.demoiselle.jee.crud.AbstractBusiness;
+
 import br.com.backend.requisitos.dao.AtividadeDAO;
 import br.com.backend.requisitos.dao.IntegranteDAO;
 import br.com.backend.requisitos.dao.RequisitoDAO;
@@ -11,11 +19,6 @@ import br.com.backend.requisitos.entity.Integrante;
 import br.com.backend.requisitos.entity.Requisito;
 import br.com.backend.requisitos.enums.StatusAtividade;
 import br.com.backend.requisitos.utils.Util;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import org.demoiselle.jee.crud.AbstractBusiness;
 
 public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 
@@ -97,8 +100,8 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 
 				atividadesDTO.add(new AtividadeDTOModel(atividade.getId(), atividade.getNome(),
 						atividade.getDescricao(), atividade.getStatus().getValue(), atividade.getDataInicio(),
-						atividade.getDataFim(), atividade.getDataConclusao(), atividade.getCriador(),
-						(Integrante) desenvolvedores.get(desenvolvedores.size() - 1)));
+						atividade.getDataFim(), atividade.getDataConclusao(), atividade.getCriador(), 
+						desenvolvedores.get(desenvolvedores.size() - 1)));
 			}
 
 			return atividadesDTO;
@@ -107,22 +110,67 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 		}
 	}
 
-	public AtividadeDTODetalhadoModel buscaEspecifica(Integer idUsuario, Integer idProjeto, Integer idRequisito,
-			Integer idAtividade) throws Exception {
-		try {
-			Requisito requisito = (Requisito) requisitoDAO.find(idRequisito);
-			if (requisito == null) {
-				throw new Exception("Requisito não encontrado");
-			}
-			Atividade atividade = atividadeDAO.findByUsuarioProjetoAndRequisito(idUsuario, idProjeto, idRequisito,
-					idAtividade);
-			if (atividade == null) {
+	public AtividadeDTODetalhadoModel buscaEspecifica(Integer idUsuario, Integer idProjeto, Integer idAtividade) throws Exception {
+		try {			
+			Atividade atividade = atividadeDAO.findByUsuarioProjeto(idUsuario, idProjeto, idAtividade);
+			if (atividade == null)
 				throw new Exception("Atividade não encontrada.");
-			}
+			
+			List<Integrante> desenvolvedores = atividade.getDesenvolvedores();
+			
 			return new AtividadeDTODetalhadoModel(atividade.getId(), atividade.getNome(), atividade.getDescricao(),
 					atividade.getStatus().getValue(), atividade.getDataInicio(), atividade.getDataFim(),
 					atividade.getDataConclusao(), atividade.getRequisito(), atividade.getCriador(),
-					atividade.getDesenvolvedores());
+					desenvolvedores);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Transactional
+	public void alterar(Integer idUsuario, Integer idProjeto, Integer idRequisito, Integer idAtividade,
+			AtividadeDTOInterface a) throws Exception {
+		try {
+			Requisito requisito = requisitoDAO.find(idRequisito);
+			if (requisito == null)
+				throw new Exception("Requisito não encontrado");
+			
+			Atividade atividade = atividadeDAO.find(idAtividade);
+			if(atividade == null)
+				throw new Exception("Atividade não encontrada");
+
+			if(!atividade.getRequisito().getId().equals(idRequisito))
+				throw new Exception("Atividade não encontrada no requisito");
+
+			atividade.setNome(a.getNome());
+			atividade.setDescricao(a.getDescricao());
+			atividade.setDataInicio(a.getDataInicio());
+			atividade.setDataFim(a.getDataFim());
+			atividade.setDataConclusao(a.getDataConclusao());	
+			atividade.setStatus(StatusAtividade.valueString(a.getStatus()));
+			atividade.setDataAlteracao(Util.currentDate());
+
+			atividadeDAO.mergeFull(atividade);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Transactional
+	public void excluir(Integer idUsuario, Integer idProjeto, Integer idRequisito, Integer idAtividade) throws Exception {
+		try {
+			Requisito requisito = requisitoDAO.find(idRequisito);
+			if (requisito == null)
+				throw new Exception("Requisito não encontrado");
+			
+			Atividade atividade = atividadeDAO.find(idAtividade);
+			if(atividade == null)
+				throw new Exception("Atividade não encontrada");
+
+			if(atividade.getRequisito().getId().equals(idRequisito))
+				throw new Exception("Atividade não encontrada no requisito");
+			
+			atividadeDAO.remove(idAtividade);
 		} catch (Exception e) {
 			throw e;
 		}

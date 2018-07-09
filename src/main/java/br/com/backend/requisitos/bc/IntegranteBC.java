@@ -95,18 +95,23 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
 
-			Integrante integrante = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
+			Integrante integrante = integranteDAO.find(idIntegrante);
 			if (integrante == null)
 				throw new Exception("Integrante não encontrado");
+			
+			if(!integrante.getProjeto().getId().equals(projeto.getId()))
+				throw new Exception("Integrante não encontrado no projeto");
 
-			integrante.getRequisitos().size();
-			integrante.getCasosDeUso().size();
-			integrante.getAtividades().size();
-
-			return new IntegranteDTODetalhadoModel(integrante.getId(), integrante.getUsuario().getId(),
-					integrante.getPerfilIntegranteProjeto().getValue(), integrante.getUsuario().getNome(),
-					integrante.getProjeto(), integrante.getRequisitos(), integrante.getCasosDeUso(),
-					integrante.getAtividades());
+			return new IntegranteDTODetalhadoModel(
+				integrante.getId(),
+				integrante.getUsuario().getId(),
+				integrante.getPerfilIntegranteProjeto().getValue(),
+				integrante.getUsuario().getNome(),
+				integrante.getProjeto(),
+				integrante.getRequisitos(),
+//				integrante.getCasosDeUso(),
+				integrante.getAtividades()
+			);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -117,37 +122,62 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 			throws Exception {
 		try {
 			Projeto projeto = (Projeto) projetoDAO.find(idProjeto);
-			if (projeto == null) {
+			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
-			}
-			Integrante integrante = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
-			if (integrante == null)
+
+			Integrante integranteUsuario = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
+			if (integranteUsuario == null)
 				throw new Exception("Integrante não encontrado");
-			if (integrante.getPerfilIntegranteProjeto().equals(PerfilIntegranteProjeto.GERENTE)) {
+
+			if (!integranteUsuario.getPerfilIntegranteProjeto().equals(PerfilIntegranteProjeto.GERENTE))
+				throw new Exception("Somente o gerente do projeto poderá alterar integrantes");
+
+			Integrante integrante = integranteDAO.find(idIntegrante);
+			if (integrante == null)
+				throw new Exception("Integrante não encontrado no projeto");
+			
+			System.out.println(projeto.getId());
+			System.out.println(integrante.getProjeto().getId());
+			if(!integrante.getProjeto().getId().equals(projeto.getId())) 
+				throw new Exception("Integrante não encontrado no projeto");
+
+			if (integrante.getPerfilIntegranteProjeto().equals(PerfilIntegranteProjeto.GERENTE))
 				throw new Exception("Não é possivel alterar o perfil do Gerente");
-			}
+			
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.valueString(i.getPerfilIntegrante()));
 			integrante.setDataAlteracao(Util.currentDate());
 
-			List<Integrante> integrantes = projeto.getIntegrantes();
-			for (Integrante iProj : integrantes) {
-				if (iProj.getId().equals(idIntegrante))
-					iProj = integrante;
-			}
-			integranteDAO.mergeHalf(idIntegrante, integrante);
+			integranteDAO.mergeFull(integrante);
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
 	@Transactional
-	public void excluir(Integer idIntegrante) throws Exception {
+	public void excluir(Integer idUsuario, Integer idProjeto, Integer idIntegrante) throws Exception {
 		try {
-			Integrante integrante = (Integrante) integranteDAO.find(idIntegrante);
-			if (integrante == null) {
+			Projeto projeto = (Projeto) projetoDAO.find(idProjeto);
+			if (projeto == null)
+				throw new Exception("Projeto não encontrado");
+
+			Integrante integranteUsuario = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
+			if (integranteUsuario == null)
 				throw new Exception("Integrante não encontrado");
-			}
-			integranteDAO.remove(idIntegrante);
+
+			if (!integranteUsuario.getPerfilIntegranteProjeto().equals(PerfilIntegranteProjeto.GERENTE))
+				throw new Exception("Somente o gerente do projeto poderá excluir integrantes");
+			
+			Integrante integrante = integranteDAO.find(idIntegrante);
+			if (integrante == null)
+				throw new Exception("Integrante não encontrado no projeto");
+			
+			if(!integrante.getProjeto().getId().equals(projeto.getId())) 
+				throw new Exception("Integrante não encontrado no projeto");
+
+			if (integrante.getPerfilIntegranteProjeto().equals(PerfilIntegranteProjeto.GERENTE))
+				throw new Exception("Não é possivel excluir o perfil do Gerente");
+
+			integranteDAO.remove(integrante.getId());
 		} catch (Exception e) {
 			throw e;
 		}

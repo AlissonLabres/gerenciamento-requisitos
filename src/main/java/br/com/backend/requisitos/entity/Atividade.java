@@ -20,7 +20,16 @@ import javax.persistence.NamedQueries;
 @NamedQueries({
 		@javax.persistence.NamedQuery(name = "Atividade.findByAllUsuarioAndProjeto", query = "SELECT a FROM Atividade a INNER JOIN a.requisito r INNER JOIN r.projeto p INNER JOIN r.integrante i INNER JOIN i.usuario u WHERE u.id = :idUsuario AND p.id = :idProjeto"),
 		@javax.persistence.NamedQuery(name = "Atividade.findByAllUsuarioProjetoAndRequisito", query = "SELECT a FROM Atividade a INNER JOIN a.requisito r INNER JOIN r.projeto p INNER JOIN r.integrante i INNER JOIN i.usuario u WHERE u.id = :idUsuario AND p.id = :idProjeto AND r.id = :idRequisito"),
-		@javax.persistence.NamedQuery(name = "Atividade.findByUsuarioProjetoAndRequisito", query = "SELECT a FROM Atividade a INNER JOIN a.requisito r INNER JOIN r.projeto p INNER JOIN r.integrante i INNER JOIN i.usuario u WHERE u.id = :idUsuario AND p.id = :idProjeto AND r.id = :idRequisito AND a.id = :idAtividade") })
+		@javax.persistence.NamedQuery(
+				name = "Atividade.findByUsuarioProjeto", 
+				query = "SELECT a FROM Atividade a "
+						+ "INNER JOIN a.requisito r "
+						+ "INNER JOIN r.projeto p "
+						+ "INNER JOIN r.integrante i "
+						+ "INNER JOIN i.usuario u "
+						+ "WHERE u.id = :idUsuario "
+						+ "AND p.id = :idProjeto "
+						+ "AND a.id = :idAtividade") })
 public class Atividade {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

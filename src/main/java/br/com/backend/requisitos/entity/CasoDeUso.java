@@ -9,8 +9,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQueries({
+	@NamedQuery(
+			name="CasoDeUso.findAll",
+	        query="SELECT c FROM CasoDeUso c INNER JOIN c.projeto p WHERE p.id = :idProjeto"
+	),
+	@NamedQuery(
+			name="CasoDeUso.findById",
+			query="SELECT c FROM CasoDeUso c INNER JOIN c.projeto p WHERE p.id = :idProjeto AND c.id = :idCasoDeUso"
+	    ),
+	@NamedQuery(
+			name="CasoDeUso.findByNameInProject", 
+			query="SELECT c FROM CasoDeUso c WHERE c.nome = :casoDeUsoNome"
+	)
+})
 public class CasoDeUso {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +38,16 @@ public class CasoDeUso {
 	private String escopo;
 	@Column(name = "caso_de_uso_nivel", nullable = false)
 	private String nivel;
-	@Column(name = "caso_de_uso_interesses_interessados", nullable = false)
-	private String interessesInteressados;
+	@Column(name = "caso_de_uso_ator_principal", nullable = false)
+	private String atorPrincipal;
 	@Column(name = "caso_de_uso_pre_condicao", nullable = false)
 	private String preCondicao;
+	@Column(name = "caso_de_uso_pos_condicao", nullable = false)
+	private String posCondicao;
+	@Column(name = "caso_de_uso_cenario_principal", nullable = false)
+	private String cenarioPrincipal;
+	@Column(name = "caso_de_uso_extensao", nullable = false)
+	private String extensao;
 	@Column(name = "caso_de_uso_data_inclusao", nullable = false)
 	private Calendar dataInclusao;
 	@Column(name = "caso_de_uso_data_alteracao", nullable = true)
@@ -40,13 +62,13 @@ public class CasoDeUso {
 	public CasoDeUso() {
 	}
 
-	public CasoDeUso(Integer id, String nome, String escopo, String nivel, String interessesInteressados,
+	public CasoDeUso(Integer id, String nome, String escopo, String nivel, String atorPrincipal,
 			String preCondicao, Calendar dataInclusao, Calendar dataAlteracao, Projeto projeto, Integrante integrante) {
 		this.id = id;
 		this.nome = nome;
 		this.escopo = escopo;
 		this.nivel = nivel;
-		this.interessesInteressados = interessesInteressados;
+		this.atorPrincipal = atorPrincipal;
 		this.preCondicao = preCondicao;
 		this.dataInclusao = dataInclusao;
 		this.dataAlteracao = dataAlteracao;
@@ -86,12 +108,12 @@ public class CasoDeUso {
 		this.nivel = nivel;
 	}
 
-	public String getInteressesInteressados() {
-		return interessesInteressados;
+	public String getAtorPrincipal() {
+		return atorPrincipal;
 	}
 
-	public void setInteressesInteressados(String interessesInteressados) {
-		this.interessesInteressados = interessesInteressados;
+	public void setAtorPrincipal(String atorPrincipal) {
+		this.atorPrincipal = atorPrincipal;
 	}
 
 	public String getPreCondicao() {
@@ -100,6 +122,30 @@ public class CasoDeUso {
 
 	public void setPreCondicao(String preCondicao) {
 		this.preCondicao = preCondicao;
+	}
+
+	public String getPosCondicao() {
+		return posCondicao;
+	}
+
+	public void setPosCondicao(String posCondicao) {
+		this.posCondicao = posCondicao;
+	}
+
+	public String getCenarioPrincipal() {
+		return cenarioPrincipal;
+	}
+
+	public void setCenarioPrincipal(String cenarioPrincipal) {
+		this.cenarioPrincipal = cenarioPrincipal;
+	}
+
+	public String getExtensao() {
+		return extensao;
+	}
+
+	public void setExtensao(String extensao) {
+		this.extensao = extensao;
 	}
 
 	public Calendar getDataInclusao() {
@@ -138,14 +184,17 @@ public class CasoDeUso {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((atorPrincipal == null) ? 0 : atorPrincipal.hashCode());
+		result = prime * result + ((cenarioPrincipal == null) ? 0 : cenarioPrincipal.hashCode());
 		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
 		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((escopo == null) ? 0 : escopo.hashCode());
+		result = prime * result + ((extensao == null) ? 0 : extensao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((integrante == null) ? 0 : integrante.hashCode());
-		result = prime * result + ((interessesInteressados == null) ? 0 : interessesInteressados.hashCode());
 		result = prime * result + ((nivel == null) ? 0 : nivel.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((posCondicao == null) ? 0 : posCondicao.hashCode());
 		result = prime * result + ((preCondicao == null) ? 0 : preCondicao.hashCode());
 		result = prime * result + ((projeto == null) ? 0 : projeto.hashCode());
 		return result;
@@ -160,6 +209,16 @@ public class CasoDeUso {
 		if (getClass() != obj.getClass())
 			return false;
 		CasoDeUso other = (CasoDeUso) obj;
+		if (atorPrincipal == null) {
+			if (other.atorPrincipal != null)
+				return false;
+		} else if (!atorPrincipal.equals(other.atorPrincipal))
+			return false;
+		if (cenarioPrincipal == null) {
+			if (other.cenarioPrincipal != null)
+				return false;
+		} else if (!cenarioPrincipal.equals(other.cenarioPrincipal))
+			return false;
 		if (dataAlteracao == null) {
 			if (other.dataAlteracao != null)
 				return false;
@@ -175,6 +234,11 @@ public class CasoDeUso {
 				return false;
 		} else if (!escopo.equals(other.escopo))
 			return false;
+		if (extensao == null) {
+			if (other.extensao != null)
+				return false;
+		} else if (!extensao.equals(other.extensao))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -185,11 +249,6 @@ public class CasoDeUso {
 				return false;
 		} else if (!integrante.equals(other.integrante))
 			return false;
-		if (interessesInteressados == null) {
-			if (other.interessesInteressados != null)
-				return false;
-		} else if (!interessesInteressados.equals(other.interessesInteressados))
-			return false;
 		if (nivel == null) {
 			if (other.nivel != null)
 				return false;
@@ -199,6 +258,11 @@ public class CasoDeUso {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
+			return false;
+		if (posCondicao == null) {
+			if (other.posCondicao != null)
+				return false;
+		} else if (!posCondicao.equals(other.posCondicao))
 			return false;
 		if (preCondicao == null) {
 			if (other.preCondicao != null)

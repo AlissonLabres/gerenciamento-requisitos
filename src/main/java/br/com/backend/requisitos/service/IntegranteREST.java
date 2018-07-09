@@ -70,8 +70,12 @@ public class IntegranteREST extends AbstractREST<Integrante, Integer> {
 	@Path("/{idIntegrante}")
 	@Transactional
 	@Auth
-	public Response alterar(IntegranteDTOInterface i, @PathParam("idUsuario") Integer idUsuario,
-			@PathParam("idProjeto") Integer idProjeto, @PathParam("idIntegrante") Integer idIntegrante) {
+	public Response alterar(
+		IntegranteDTOInterface i,
+		@PathParam("idUsuario") Integer idUsuario,
+		@PathParam("idProjeto") Integer idProjeto,
+		@PathParam("idIntegrante") Integer idIntegrante
+	) {
 		try {
 			((IntegranteBC) bc).alterar(idUsuario, idProjeto, idIntegrante, i);
 			return Response.ok().build();
@@ -84,10 +88,13 @@ public class IntegranteREST extends AbstractREST<Integrante, Integer> {
 	@Path("/{idIntegrante}")
 	@Transactional
 	@Auth
-	public Response excluir(@PathParam("idUsuario") Integer idUsuario,
-			@PathParam("idIntegrante") Integer idIntegrante) {
+	public Response excluir(
+		@PathParam("idUsuario") Integer idUsuario,
+		@PathParam("idProjeto") Integer idProjeto,
+		@PathParam("idIntegrante") Integer idIntegrante
+	) {
 		try {
-			bc.remove(idIntegrante);
+			((IntegranteBC) bc).excluir(idUsuario, idProjeto, idIntegrante);
 			return Response.ok().build();
 		} catch (Exception e) {
 			return Util.handlerError(e, LOG);

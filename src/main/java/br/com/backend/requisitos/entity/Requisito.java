@@ -20,8 +20,8 @@ import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
-		@javax.persistence.NamedQuery(name = "Requisito.findAll", query = "SELECT r FROM Requisito r INNER JOIN r.projeto p INNER JOIN r.integrante i INNER JOIN i.usuario u WHERE p.id = :idProjeto AND u.id = :idUsuario"),
-		@javax.persistence.NamedQuery(name = "Requisito.findById", query = "SELECT r FROM Requisito r INNER JOIN r.projeto p INNER JOIN r.integrante i INNER JOIN i.usuario u WHERE p.id = :idProjeto AND u.id = :idUsuario AND r.id = :idRequisito") })
+		@javax.persistence.NamedQuery(name = "Requisito.findAll", query = "SELECT r FROM Requisito r INNER JOIN r.projeto p WHERE p.id = :idProjeto"),
+		@javax.persistence.NamedQuery(name = "Requisito.findById", query = "SELECT r FROM Requisito r INNER JOIN r.projeto p WHERE p.id = :idProjeto AND r.id = :idRequisito") })
 public class Requisito {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

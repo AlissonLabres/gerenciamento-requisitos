@@ -28,22 +28,21 @@ public class RequisitoDAO extends AbstractDAO<Requisito, Integer> {
 		}
 	}
 
-	public List<Requisito> list(Integer idUsuario, Integer idProjeto) {
+	public List<Requisito> list(Integer idProjeto) {
 		try {
-			return
-
-			getEntityManager().createNamedQuery("Requisito.findAll", Requisito.class)
-					.setParameter("idProjeto", idProjeto).setParameter("idUsuario", idUsuario).getResultList();
+			return getEntityManager().createNamedQuery("Requisito.findAll", Requisito.class)
+					.setParameter("idProjeto", idProjeto).getResultList();
 		} catch (Exception e) {
 			throw e;
 		}
 	}
 
-	public Requisito find(Integer idUsuario, Integer idProjeto, Integer idRequisito) {
+	public Requisito find(Integer idProjeto, Integer idRequisito) {
 		try {
 			List<Requisito> requisitos = getEntityManager().createNamedQuery("Requisito.findById", Requisito.class)
-					.setParameter("idUsuario", idUsuario).setParameter("idProjeto", idProjeto)
-					.setParameter("idRequisito", idRequisito).getResultList();
+					.setParameter("idProjeto", idProjeto)
+					.setParameter("idRequisito", idRequisito)
+					.getResultList();
 
 			return requisitos.size() > 0 ? (Requisito) requisitos.get(0) : null;
 		} catch (Exception e) {

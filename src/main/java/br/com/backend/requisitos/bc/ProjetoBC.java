@@ -21,13 +21,13 @@ import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
 import br.com.backend.requisitos.utils.Util;
 
 public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
-	
+
 	@Inject
 	private ProjetoDAO projetoDAO;
-	
+
 	@Inject
 	private IntegranteDAO integranteDAO;
-	
+
 	@Inject
 	private UsuarioDAO usuarioDAO;
 
@@ -92,8 +92,14 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
 
+			List<Integrante> integrantes = projeto.getIntegrantes();
+			Integrante integranteProjeto = null;
+			for (Integrante i : integrantes)
+				if (i.getUsuario().getId().equals(idUsuario))
+					integranteProjeto = new Integrante(i);
+
 			return new ProjetoDTODetalhadoModel(projeto.getId(), projeto.getNome(), projeto.getDataInicio(),
-					projeto.getDataFim(), projeto.getRequisitos(), projeto.getCasosDeUso(), projeto.getIntegrantes());
+					projeto.getDataFim(), integranteProjeto, projeto.getRequisitos(), projeto.getIntegrantes());
 		} catch (Exception e) {
 			throw e;
 		}
@@ -110,9 +116,12 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
 
+			projeto.setNome(p.getNome());
+			projeto.setDataInicio(p.getDataInicio());
+			projeto.setDataFim(p.getDataFim());
 			projeto.setDataAlteracao(Util.currentDate());
 
-			projetoDAO.mergeHalf(idProjeto, projeto);
+			projetoDAO.mergeFull(projeto);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -129,6 +138,16 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
 
+			if (projeto.getIntegrantes().size() > 1)
+				throw new Exception("Este projeto ainda contém integrantes.");
+			
+			if (projeto.getRequisitos().size() > 0)
+				throw new Exception("Este projeto ainda contém requisitos");
+
+			if (projeto.getCasosDeUso().size() > 0)
+				throw new Exception("Este projeto ainda contém casos de uso");
+			
+			integranteDAO.remove(projeto.getIntegrantes().get(0).getId());
 			projetoDAO.remove(idProjeto);
 		} catch (Exception e) {
 			throw e;

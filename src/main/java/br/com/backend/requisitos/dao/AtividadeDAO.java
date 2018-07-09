@@ -56,13 +56,13 @@ public class AtividadeDAO extends AbstractDAO<Atividade, Integer> {
 		}
 	}
 
-	public Atividade findByUsuarioProjetoAndRequisito(Integer idUsuario, Integer idProjeto, Integer idRequisito,
-			Integer idAtividade) {
+	public Atividade findByUsuarioProjeto(Integer idUsuario, Integer idProjeto, Integer idAtividade) {
 		try {
 			List<Atividade> atividades = getEntityManager()
-					.createNamedQuery("Atividade.findByUsuarioProjetoAndRequisito", Atividade.class)
+					.createNamedQuery("Atividade.findByUsuarioProjeto", Atividade.class)
 					.setParameter("idUsuario", idUsuario).setParameter("idProjeto", idProjeto)
-					.setParameter("idRequisito", idRequisito).setParameter("idAtividade", idAtividade).getResultList();
+					.setParameter("idAtividade", idAtividade)
+					.getResultList();
 
 			return atividades.size() > 0 ? (Atividade) atividades.get(0) : null;
 		} catch (Exception e) {

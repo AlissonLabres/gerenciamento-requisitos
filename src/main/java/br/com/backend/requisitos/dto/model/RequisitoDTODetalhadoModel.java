@@ -12,7 +12,9 @@ public class RequisitoDTODetalhadoModel extends RequisitoDTOModel {
 
 	public RequisitoDTODetalhadoModel(Integer id, String idRequisito, String nome, String descricao, String importancia,
 			String fonte, String categoria, Integer idUsuario, Integrante integrante, Projeto projeto) {
+
 		super(id, idRequisito, nome, descricao, importancia, fonte, categoria);
+
 		this.integrante = new IntegranteDTOModel(integrante.getPerfilIntegranteProjeto().getValue(),
 				integrante.getUsuario().getNome(), integrante.getId());
 

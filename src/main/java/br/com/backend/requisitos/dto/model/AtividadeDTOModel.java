@@ -13,15 +13,24 @@ public class AtividadeDTOModel extends AtividadeDTOInterface {
 	public AtividadeDTOModel() {
 	}
 
-	public AtividadeDTOModel(Integer id, String nome, String descricao, String status, Calendar dataInicio,
-			Calendar dataFim, Calendar dataConclusao, Integrante criador, Integrante desenvolvedor) {
+	public AtividadeDTOModel(
+		Integer id,
+		String nome,
+		String descricao,
+		String status,
+		Calendar dataInicio,
+		Calendar dataFim,
+		Calendar dataConclusao,
+		Integrante criador,
+		Integrante desenvolvedor
+	) {
 		super(nome, descricao, status, dataInicio, dataFim, dataConclusao, null);
 		this.id = id;
 		this.criador = new IntegranteDTOModel(criador.getPerfilIntegranteProjeto().getValue(),
 				criador.getUsuario().getNome(), criador.getId());
 
-		this.desenvolvedor = new IntegranteDTOModel(desenvolvedor.getPerfilIntegranteProjeto().getValue(),
-				desenvolvedor.getUsuario().getNome(), desenvolvedor.getId());
+		this.desenvolvedor = desenvolvedor != null ? new IntegranteDTOModel(desenvolvedor.getPerfilIntegranteProjeto().getValue(),
+				desenvolvedor.getUsuario().getNome(), desenvolvedor.getId()) : null;
 	}
 
 	public Integer getId() {
