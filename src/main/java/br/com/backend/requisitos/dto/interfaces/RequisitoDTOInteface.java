@@ -8,7 +8,9 @@ public class RequisitoDTOInteface {
 	private String descricao;
 
 	private String importancia;
+
 	private String fonte;
+
 	private String categoria;
 
 	public RequisitoDTOInteface() {

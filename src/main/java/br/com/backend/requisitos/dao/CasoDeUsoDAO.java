@@ -37,7 +37,7 @@ public class CasoDeUsoDAO extends AbstractDAO<CasoDeUso, Integer> {
 		}
 	}
 	
-	public CasoDeUso find(Integer idProjeto, Integer idCasoDeUso) {
+	public CasoDeUso findByIdProjetoAndICasoDeUso(Integer idProjeto, Integer idCasoDeUso) {
 		try {
 			List<CasoDeUso> casosDeUso = getEntityManager().createNamedQuery("CasoDeUso.findById", CasoDeUso.class)
 					.setParameter("idProjeto", idProjeto)

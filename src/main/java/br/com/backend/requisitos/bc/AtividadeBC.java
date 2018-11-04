@@ -111,20 +111,16 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 	}
 
 	public AtividadeDTODetalhadoModel buscaEspecifica(Integer idUsuario, Integer idProjeto, Integer idAtividade) throws Exception {
-		try {			
-			Atividade atividade = atividadeDAO.findByUsuarioProjeto(idUsuario, idProjeto, idAtividade);
-			if (atividade == null)
-				throw new Exception("Atividade não encontrada.");
-			
-			List<Integrante> desenvolvedores = atividade.getDesenvolvedores();
-			
-			return new AtividadeDTODetalhadoModel(atividade.getId(), atividade.getNome(), atividade.getDescricao(),
-					atividade.getStatus().getValue(), atividade.getDataInicio(), atividade.getDataFim(),
-					atividade.getDataConclusao(), atividade.getRequisito(), atividade.getCriador(),
-					desenvolvedores);
-		} catch (Exception e) {
-			throw e;
-		}
+		Atividade atividade = atividadeDAO.findByUsuarioProjeto(idUsuario, idProjeto, idAtividade);
+		if (atividade == null)
+			throw new Exception("Atividade não encontrada.");
+		
+		List<Integrante> desenvolvedores = atividade.getDesenvolvedores();
+		
+		return new AtividadeDTODetalhadoModel(atividade.getId(), atividade.getNome(), atividade.getDescricao(),
+				atividade.getStatus().getValue(), atividade.getDataInicio(), atividade.getDataFim(),
+				atividade.getDataConclusao(), atividade.getRequisito(), atividade.getCriador(),
+				desenvolvedores);
 	}
 
 	@Transactional

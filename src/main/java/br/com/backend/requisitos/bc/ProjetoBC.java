@@ -98,8 +98,17 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 				if (i.getUsuario().getId().equals(idUsuario))
 					integranteProjeto = new Integrante(i);
 
-			return new ProjetoDTODetalhadoModel(projeto.getId(), projeto.getNome(), projeto.getDataInicio(),
-					projeto.getDataFim(), integranteProjeto, projeto.getRequisitos(), projeto.getIntegrantes());
+			return new ProjetoDTODetalhadoModel(
+				projeto.getId(),
+				projeto.getNome(),
+				projeto.getDataInicio(),
+				projeto.getDataFim(),
+				integranteProjeto,
+				projeto.getRequisitos(),
+				projeto.getIntegrantes(),
+				projeto.getCasosDeUso(),
+				projeto.getArtefatos()
+			);
 		} catch (Exception e) {
 			throw e;
 		}

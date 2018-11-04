@@ -6,14 +6,19 @@ import java.util.Calendar;
 public class AtividadeDTOInterface {
 
 	private String nome;
+
 	private String descricao;
+
 	private String status;
 	@JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
 	private Calendar dataInicio;
+
 	@JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
 	private Calendar dataFim;
+	
 	@JsonFormat(pattern = "dd/MM/yyyy", timezone = "America/Sao_Paulo")
 	private Calendar dataConclusao;
+
 	private Integer idDesenvolvedor;
 
 	public AtividadeDTOInterface() {

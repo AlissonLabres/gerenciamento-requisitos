@@ -43,9 +43,9 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 	public void create(Integer idUsuario, Integer idProjeto, RequisitoDTOInteface r) throws Exception {
 		try {
 			Projeto projeto = (Projeto) projetoDAO.find(idProjeto);
-			if (projeto == null) {
+			if (projeto == null) 
 				throw new Exception("Projeto não encontrado");
-			}
+
 			Integrante integrante = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
 			if (integrante == null)
 				throw new Exception("Usuario não encontrado");
@@ -82,8 +82,17 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 		try {
 			List<RequisitoDTOModel> requisitosDTO = new ArrayList<RequisitoDTOModel>();
 			for (Requisito r : requisitoDAO.list(idProjeto)) {
-				requisitosDTO.add(new RequisitoDTOModel(r.getId(), r.getIdRequisito().toString(), r.getNome(),
-						r.getDescricao(), r.getImportancia().getValue(), r.getFonte(), r.getCategoria().getValue()));
+				requisitosDTO.add(
+					new RequisitoDTOModel(
+						r.getId(),
+						r.getIdRequisito().toString(),
+						r.getNome(),
+						r.getDescricao(),
+						r.getImportancia().getValue(),
+						r.getFonte(),
+						r.getCategoria().getValue()
+					)
+				);
 			}
 
 			return requisitosDTO;
@@ -107,10 +116,28 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 			if (integrante == null)
 				throw new Exception("Usuario não encontrado");
 
-			return new RequisitoDTODetalhadoModel(requisito.getId(), requisito.getIdRequisito().toString(),
-					requisito.getNome(), requisito.getDescricao(), requisito.getImportancia().getValue(),
-					requisito.getFonte(), requisito.getCategoria().getValue(),
-					requisito.getIntegrante().getUsuario().getId(), integrante, projeto);
+			RequisitoDTODetalhadoModel requisitosDetalhados = new RequisitoDTODetalhadoModel(
+				requisito.getId(),
+				requisito.getIdRequisito().toString(),
+				requisito.getNome(),
+				requisito.getDescricao(),
+				requisito.getImportancia().getValue(),
+				requisito.getFonte(),
+				requisito.getCategoria().getValue(),
+				integrante,
+				projeto,
+				requisito.getArtefatos()
+			);
+				
+			if(!requisito.getArtefatos().isEmpty() && (requisitosDetalhados.getArtefatos().size() < requisito.getArtefatos().size())) {
+				for (int iterator = 0; iterator < requisito.getArtefatos().size(); iterator++) {
+					if(!requisitosDetalhados.getArtefatos().contains(requisito.getArtefatos().get(iterator))) {
+						throw new Exception("Artefato não contém Arquivo anexado.");
+					}
+				}
+			}
+			
+			return requisitosDetalhados;
 		} catch (Exception e) {
 			throw e;
 		}

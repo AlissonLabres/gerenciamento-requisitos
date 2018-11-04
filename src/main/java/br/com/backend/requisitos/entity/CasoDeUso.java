@@ -1,9 +1,11 @@
 package br.com.backend.requisitos.entity;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 @Entity
 @NamedQueries({
@@ -55,9 +58,14 @@ public class CasoDeUso {
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
 	private Projeto projeto;
+	
 	@ManyToOne
 	@JoinColumn(name = "integrante_id", nullable = false)
 	private Integrante integrante;
+
+	@OneToMany(mappedBy = "casoDeUso", fetch = FetchType.EAGER)
+	@Column(name = "caso_de_uso_artefatos", nullable = true)
+	private List<Artefato> artefatos;
 
 	public CasoDeUso() {
 	}
@@ -180,10 +188,19 @@ public class CasoDeUso {
 		this.integrante = integrante;
 	}
 
+	public List<Artefato> getArtefatos() {
+		return artefatos;
+	}
+
+	public void setArtefatos(List<Artefato> artefatos) {
+		this.artefatos = artefatos;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((artefatos == null) ? 0 : artefatos.hashCode());
 		result = prime * result + ((atorPrincipal == null) ? 0 : atorPrincipal.hashCode());
 		result = prime * result + ((cenarioPrincipal == null) ? 0 : cenarioPrincipal.hashCode());
 		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
@@ -209,6 +226,11 @@ public class CasoDeUso {
 		if (getClass() != obj.getClass())
 			return false;
 		CasoDeUso other = (CasoDeUso) obj;
+		if (artefatos == null) {
+			if (other.artefatos != null)
+				return false;
+		} else if (!artefatos.equals(other.artefatos))
+			return false;
 		if (atorPrincipal == null) {
 			if (other.atorPrincipal != null)
 				return false;

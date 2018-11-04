@@ -104,7 +104,7 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
 
-			CasoDeUso casoDeUso = casoDeUsoDAO.find(idProjeto, idCasoDeUso);
+			CasoDeUso casoDeUso = casoDeUsoDAO.findByIdProjetoAndICasoDeUso(idProjeto, idCasoDeUso);
 			if (casoDeUso == null)
 				throw new Exception("Caso de uso não encontrado");
 
@@ -122,7 +122,9 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 				casoDeUso.getCenarioPrincipal(),
 				casoDeUso.getExtensao(),
 				casoDeUso.getAtorPrincipal(),
-				casoDeUso.getIntegrante()
+				casoDeUso.getIntegrante(),
+				casoDeUso.getProjeto(),
+				casoDeUso.getArtefatos()
 			);
 		} catch (Exception e) {
 			throw e;
@@ -136,7 +138,7 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
 
-			CasoDeUso casoDeUso = casoDeUsoDAO.find(idProjeto, idRequisito);
+			CasoDeUso casoDeUso = casoDeUsoDAO.findByIdProjetoAndICasoDeUso(idProjeto, idRequisito);
 			if (casoDeUso == null)
 				throw new Exception("Caso de uso não encontrado");
 			
@@ -171,7 +173,7 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			if (projeto == null)
 				throw new Exception("Projeto não encontrado");
 
-			CasoDeUso casoDeUso = casoDeUsoDAO.find(idProjeto, idRequisito);
+			CasoDeUso casoDeUso = casoDeUsoDAO.findByIdProjetoAndICasoDeUso(idProjeto, idRequisito);
 			if (casoDeUso == null)
 				throw new Exception("Caso de uso não encontrado");
 			

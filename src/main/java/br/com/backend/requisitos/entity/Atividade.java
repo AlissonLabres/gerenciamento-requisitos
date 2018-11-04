@@ -35,29 +35,40 @@ public class Atividade {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "atividade_id", nullable = false)
 	private Integer id;
+
 	@Column(name = "atividade_nome", nullable = false)
 	private String nome;
+	
 	@Column(name = "atividade_descricao", nullable = false)
 	private String descricao;
+	
 	@Enumerated
 	@Column(name = "atividade_status", nullable = false)
 	private StatusAtividade status;
+	
 	@Column(name = "atividade_data_inicio", nullable = false)
 	private Calendar dataInicio;
+	
 	@Column(name = "atividade_data_conclusao", nullable = true)
 	private Calendar dataConclusao;
+	
 	@Column(name = "atividade_data_fim", nullable = false)
 	private Calendar dataFim;
+	
 	@Column(name = "atividade_data_inclusao", nullable = false)
 	private Calendar dataInclusao;
+	
 	@Column(name = "atividade_data_alteracao", nullable = true)
 	private Calendar dataAlteracao;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "requisito_id", nullable = false)
 	private Requisito requisito;
+	
 	@ManyToOne
 	@JoinColumn(name = "integrante_id", nullable = false)
 	private Integrante criador;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Atividade_has_Integrante", joinColumns = {
 			@JoinColumn(name = "projeto_id") }, inverseJoinColumns = { @JoinColumn(name = "integrante_id") })

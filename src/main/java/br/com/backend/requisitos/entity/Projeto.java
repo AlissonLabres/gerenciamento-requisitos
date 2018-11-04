@@ -22,29 +22,41 @@ public class Projeto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "projeto_id", nullable = false)
 	private Integer id;
+
 	@Column(name = "projeto_nome", nullable = false)
 	private String nome;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "projeto_data_inicio", nullable = false)
 	private Calendar dataInicio;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "projeto_data_fim", nullable = false)
 	private Calendar dataFim;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "projeto_data_inclusao", nullable = false)
 	private Calendar dataInclusao;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "projeto_data_alteracao", nullable = true)
 	private Calendar dataAlteracao;
+
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
 	@Column(name = "requisitos", nullable = true)
 	private List<Requisito> requisitos;
+
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
 	@Column(name = "casosDeUso", nullable = true)
 	private List<CasoDeUso> casosDeUso;
+
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
 	@Column(name = "integrantes", nullable = false)
 	private List<Integrante> integrantes;
+	
+	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
+	@Column(name = "artefatos", nullable = true)
+	private List<Artefato> artefatos;
 
 	public Projeto(Projeto projeto) {
 		id = projeto.id;
@@ -56,14 +68,24 @@ public class Projeto {
 		requisitos = projeto.requisitos;
 		casosDeUso = projeto.casosDeUso;
 		integrantes = projeto.integrantes;
+		artefatos = projeto.artefatos;
 	}
 
 	public Projeto() {
 	}
 
-	public Projeto(Integer id, String nome, Calendar dataInicio, Calendar dataFim, Calendar dataInclusao,
-			Calendar dataAlteracao, List<Requisito> requisitos, List<CasoDeUso> casosDeUso,
-			List<Integrante> integrantes) {
+	public Projeto(
+		Integer id,
+		String nome,
+		Calendar dataInicio,
+		Calendar dataFim,
+		Calendar dataInclusao,
+		Calendar dataAlteracao,
+		List<Requisito> requisitos,
+		List<CasoDeUso> casosDeUso,
+		List<Integrante> integrantes,
+		List<Artefato> artefatos
+	) {
 		this.id = id;
 		this.nome = nome;
 		this.dataInicio = dataInicio;
@@ -73,6 +95,7 @@ public class Projeto {
 		this.requisitos = requisitos;
 		this.casosDeUso = casosDeUso;
 		this.integrantes = integrantes;
+		this.artefatos = artefatos;
 	}
 
 	public Integer getId() {
@@ -147,10 +170,19 @@ public class Projeto {
 		this.integrantes = integrantes;
 	}
 
+	public List<Artefato> getArtefatos() {
+		return artefatos;
+	}
+
+	public void setArtefatos(List<Artefato> artefatos) {
+		this.artefatos = artefatos;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((artefatos == null) ? 0 : artefatos.hashCode());
 		result = prime * result + ((casosDeUso == null) ? 0 : casosDeUso.hashCode());
 		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
 		result = prime * result + ((dataFim == null) ? 0 : dataFim.hashCode());
@@ -172,6 +204,11 @@ public class Projeto {
 		if (getClass() != obj.getClass())
 			return false;
 		Projeto other = (Projeto) obj;
+		if (artefatos == null) {
+			if (other.artefatos != null)
+				return false;
+		} else if (!artefatos.equals(other.artefatos))
+			return false;
 		if (casosDeUso == null) {
 			if (other.casosDeUso != null)
 				return false;

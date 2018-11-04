@@ -27,42 +27,58 @@ public class Requisito {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "requisito_id", nullable = false)
 	private Integer id;
+
 	@Column(name = "requisito_idRequisito", nullable = false)
 	private Double idRequisito;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "requisito_data_inclusao", nullable = false)
 	private Calendar dataInclusao;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "requisito_data_alteracao", nullable = true)
 	private Calendar dataAlteracao;
+
 	@Column(name = "requisito_nome", nullable = false)
 	private String nome;
+
 	@Column(name = "requisito_descricao", nullable = true)
 	private String descricao;
+
 	@Column(name = "requisito_importancia", nullable = false)
 	private ImportanciaRequisito importancia;
+
 	@Column(name = "requisito_fonte", nullable = false)
 	private String fonte;
+
 	@Enumerated
 	@Column(name = "requisito_categoria", nullable = false)
 	private CategoriaRequisito categoria;
+
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
 	private Projeto projeto;
+
 	@ManyToOne
 	@JoinColumn(name = "integrante_id", nullable = false)
 	private Integrante integrante;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "requisito", fetch = FetchType.EAGER)
 	@Column(name = "requisito_atividades", nullable = true)
 	private List<Atividade> atividades;
+
+	@OneToMany(mappedBy = "requisito", fetch = FetchType.EAGER)
+	@Column(name = "requisito_artefatos", nullable = true)
+	private List<Artefato> artefatos;
+
 
 	public Requisito() {
 	}
 
 	public Requisito(Integer id, String nome, String descricao, ImportanciaRequisito importancia, String fonte,
 			CategoriaRequisito categoria, Calendar dataInclusao, Calendar dataAlteracao, Projeto projeto,
-			Integrante integrante, List<Atividade> atividades) {
+			Integrante integrante, List<Atividade> atividades, List<Artefato> artefatos) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
@@ -74,6 +90,7 @@ public class Requisito {
 		this.projeto = projeto;
 		this.integrante = integrante;
 		this.atividades = atividades;
+		this.artefatos = artefatos;
 	}
 
 	public Integer getId() {
@@ -172,10 +189,19 @@ public class Requisito {
 		this.atividades = atividades;
 	}
 
+	public List<Artefato> getArtefatos() {
+		return artefatos;
+	}
+
+	public void setArtefatos(List<Artefato> artefatos) {
+		this.artefatos = artefatos;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((artefatos == null) ? 0 : artefatos.hashCode());
 		result = prime * result + ((atividades == null) ? 0 : atividades.hashCode());
 		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
 		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
@@ -200,6 +226,11 @@ public class Requisito {
 		if (getClass() != obj.getClass())
 			return false;
 		Requisito other = (Requisito) obj;
+		if (artefatos == null) {
+			if (other.artefatos != null)
+				return false;
+		} else if (!artefatos.equals(other.artefatos))
+			return false;
 		if (atividades == null) {
 			if (other.atividades != null)
 				return false;

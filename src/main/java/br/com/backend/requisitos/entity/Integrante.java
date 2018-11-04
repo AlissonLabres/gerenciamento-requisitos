@@ -30,27 +30,35 @@ public class Integrante {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "integrante_id", nullable = false)
 	private Integer id;
+	
 	@Enumerated
 	@Column(name = "integrante_perfil_usuario_projeto", nullable = false)
 	private PerfilIntegranteProjeto perfilIntegranteProjeto;
+	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "integrante_data_inclusao", nullable = false)
 	private Calendar dataInclusao;
+	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "integrante_data_alteracao", nullable = true)
 	private Calendar dataAlteracao;
+	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;
+	
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
 	private Projeto projeto;
+	
 	@OneToMany(mappedBy = "integrante", fetch = FetchType.EAGER)
 	@Column(name = "integrante_requisitos", nullable = true)
 	private List<Requisito> requisitos;
+	
 	@OneToMany(mappedBy = "integrante", fetch = FetchType.EAGER)
 	@Column(name = "integrante_casoDeUsos", nullable = true)
 	private List<CasoDeUso> casosDeUso;
+
 	@ManyToMany(mappedBy = "desenvolvedores", fetch = FetchType.EAGER)
 	@Column(name = "integrante_atividades", nullable = true)
 	private List<Atividade> atividades;
