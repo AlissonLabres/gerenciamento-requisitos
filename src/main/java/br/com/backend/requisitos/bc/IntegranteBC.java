@@ -109,7 +109,7 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 				integrante.getUsuario().getNome(),
 				integrante.getProjeto(),
 				integrante.getRequisitos(),
-//				integrante.getCasosDeUso(),
+				integrante.getCasosDeUso(),
 				integrante.getAtividades()
 			);
 		} catch (Exception e) {

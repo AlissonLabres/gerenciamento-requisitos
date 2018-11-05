@@ -18,6 +18,7 @@ import br.com.backend.requisitos.entity.Integrante;
 import br.com.backend.requisitos.entity.Projeto;
 import br.com.backend.requisitos.entity.Usuario;
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
+import br.com.backend.requisitos.enums.Status;
 import br.com.backend.requisitos.utils.Util;
 
 public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
@@ -48,6 +49,7 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			projeto.setDataInicio(p.getDataInicio());
 			projeto.setDataFim(p.getDataFim());
 			projeto.setDataInclusao(Util.currentDate());
+			projeto.setStatus(Status.valueString(p.getStatus()));
 
 			integrante.setUsuario(usuario);
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.GERENTE);
@@ -73,7 +75,15 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 
 			List<ProjetoDTOModel> projetosDTO = new ArrayList<ProjetoDTOModel>();
 			for (Projeto p : projetos) {
-				projetosDTO.add(new ProjetoDTOModel(p.getId(), p.getNome(), p.getDataInicio(), p.getDataFim()));
+				projetosDTO.add(
+					new ProjetoDTOModel(
+						p.getId(),
+						p.getNome(),
+						p.getDataInicio(),
+						p.getDataFim(),
+						p.getStatus().getValue()
+					)
+				);
 			}
 
 			return projetosDTO;
@@ -107,7 +117,8 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 				projeto.getRequisitos(),
 				projeto.getIntegrantes(),
 				projeto.getCasosDeUso(),
-				projeto.getArtefatos()
+				projeto.getArtefatos(),
+				projeto.getStatus().getValue()
 			);
 		} catch (Exception e) {
 			throw e;
@@ -129,6 +140,7 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			projeto.setDataInicio(p.getDataInicio());
 			projeto.setDataFim(p.getDataFim());
 			projeto.setDataAlteracao(Util.currentDate());
+			projeto.setStatus(Status.valueString(p.getStatus()));
 
 			projetoDAO.mergeFull(projeto);
 		} catch (Exception e) {

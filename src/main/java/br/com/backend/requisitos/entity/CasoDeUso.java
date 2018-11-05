@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+
+import br.com.backend.requisitos.enums.Status;
 
 @Entity
 @NamedQueries({
@@ -35,26 +38,37 @@ public class CasoDeUso {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "caso_de_uso_id", nullable = false)
 	private Integer id;
+
 	@Column(name = "caso_de_uso_nome", nullable = false)
 	private String nome;
+
 	@Column(name = "caso_de_uso_escopo", nullable = false)
 	private String escopo;
+
 	@Column(name = "caso_de_uso_nivel", nullable = false)
 	private String nivel;
+
 	@Column(name = "caso_de_uso_ator_principal", nullable = false)
 	private String atorPrincipal;
+
 	@Column(name = "caso_de_uso_pre_condicao", nullable = false)
 	private String preCondicao;
+
 	@Column(name = "caso_de_uso_pos_condicao", nullable = false)
 	private String posCondicao;
+
 	@Column(name = "caso_de_uso_cenario_principal", nullable = false)
 	private String cenarioPrincipal;
+
 	@Column(name = "caso_de_uso_extensao", nullable = false)
 	private String extensao;
+
 	@Column(name = "caso_de_uso_data_inclusao", nullable = false)
 	private Calendar dataInclusao;
+
 	@Column(name = "caso_de_uso_data_alteracao", nullable = true)
 	private Calendar dataAlteracao;
+
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
 	private Projeto projeto;
@@ -66,6 +80,10 @@ public class CasoDeUso {
 	@OneToMany(mappedBy = "casoDeUso", fetch = FetchType.EAGER)
 	@Column(name = "caso_de_uso_artefatos", nullable = true)
 	private List<Artefato> artefatos;
+
+	@Enumerated
+	@Column(name = "caso_de_uso_status", nullable = false)
+	private Status status;
 
 	public CasoDeUso() {
 	}
@@ -196,6 +214,14 @@ public class CasoDeUso {
 		this.artefatos = artefatos;
 	}
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -214,6 +240,7 @@ public class CasoDeUso {
 		result = prime * result + ((posCondicao == null) ? 0 : posCondicao.hashCode());
 		result = prime * result + ((preCondicao == null) ? 0 : preCondicao.hashCode());
 		result = prime * result + ((projeto == null) ? 0 : projeto.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
@@ -295,6 +322,8 @@ public class CasoDeUso {
 			if (other.projeto != null)
 				return false;
 		} else if (!projeto.equals(other.projeto))
+			return false;
+		if (status != other.status)
 			return false;
 		return true;
 	}

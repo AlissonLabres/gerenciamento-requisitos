@@ -1,10 +1,14 @@
 package br.com.backend.requisitos.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import br.com.backend.requisitos.enums.Status;
+
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -57,6 +61,10 @@ public class Projeto {
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
 	@Column(name = "artefatos", nullable = true)
 	private List<Artefato> artefatos;
+	
+	@Enumerated
+	@Column(name = "projeto_status", nullable = false)
+	private Status status;
 
 	public Projeto(Projeto projeto) {
 		id = projeto.id;
@@ -69,6 +77,7 @@ public class Projeto {
 		casosDeUso = projeto.casosDeUso;
 		integrantes = projeto.integrantes;
 		artefatos = projeto.artefatos;
+		status = projeto.status;
 	}
 
 	public Projeto() {
@@ -84,7 +93,8 @@ public class Projeto {
 		List<Requisito> requisitos,
 		List<CasoDeUso> casosDeUso,
 		List<Integrante> integrantes,
-		List<Artefato> artefatos
+		List<Artefato> artefatos,
+		Status status
 	) {
 		this.id = id;
 		this.nome = nome;
@@ -96,6 +106,7 @@ public class Projeto {
 		this.casosDeUso = casosDeUso;
 		this.integrantes = integrantes;
 		this.artefatos = artefatos;
+		this.status = status;
 	}
 
 	public Integer getId() {
@@ -178,6 +189,14 @@ public class Projeto {
 		this.artefatos = artefatos;
 	}
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -192,6 +211,7 @@ public class Projeto {
 		result = prime * result + ((integrantes == null) ? 0 : integrantes.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((requisitos == null) ? 0 : requisitos.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
@@ -253,6 +273,8 @@ public class Projeto {
 			if (other.requisitos != null)
 				return false;
 		} else if (!requisitos.equals(other.requisitos))
+			return false;
+		if (status != other.status)
 			return false;
 		return true;
 	}

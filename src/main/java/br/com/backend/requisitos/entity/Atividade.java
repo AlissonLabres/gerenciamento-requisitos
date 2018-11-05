@@ -1,6 +1,6 @@
 package br.com.backend.requisitos.entity;
 
-import br.com.backend.requisitos.enums.StatusAtividade;
+import br.com.backend.requisitos.enums.Status;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.Column;
@@ -44,7 +44,7 @@ public class Atividade {
 	
 	@Enumerated
 	@Column(name = "atividade_status", nullable = false)
-	private StatusAtividade status;
+	private Status status;
 	
 	@Column(name = "atividade_data_inicio", nullable = false)
 	private Calendar dataInicio;
@@ -77,7 +77,7 @@ public class Atividade {
 	public Atividade() {
 	}
 
-	public Atividade(Integer id, String nome, String descricao, StatusAtividade status, Calendar dataInicio,
+	public Atividade(Integer id, String nome, String descricao, Status status, Calendar dataInicio,
 			Calendar dataFim, Calendar dataInclusao, Calendar dataConclusao, Calendar dataAlteracao,
 			Requisito requisito, Integrante criador, List<Integrante> integrantes) {
 		this.id = id;
@@ -118,11 +118,11 @@ public class Atividade {
 		this.descricao = descricao;
 	}
 
-	public StatusAtividade getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(StatusAtividade status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 

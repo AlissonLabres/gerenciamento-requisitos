@@ -17,12 +17,23 @@ public class CasoDeUsoDTOInterface {
 	private String extensao;
 
 	private String atorPrincipal;
+	
+	private String status;
 
 	public CasoDeUsoDTOInterface() {
 	}
 
-	public CasoDeUsoDTOInterface(String nome, String escopo, String nivel, String preCondicao, String posCondicao,
-			String cenarioPrincipal, String extensao, String atorPrincial) {
+	public CasoDeUsoDTOInterface(
+		String nome,
+		String escopo,
+		String nivel,
+		String preCondicao,
+		String posCondicao,
+		String cenarioPrincipal,
+		String extensao,
+		String atorPrincial,
+		String status
+	) {
 		this.nome = nome;
 		this.escopo = escopo;
 		this.nivel = nivel;
@@ -31,6 +42,7 @@ public class CasoDeUsoDTOInterface {
 		this.cenarioPrincipal = cenarioPrincipal;
 		this.extensao = extensao;
 		this.atorPrincipal = atorPrincial;
+		this.status = status;
 	}
 
 	public String getNome() {
@@ -95,5 +107,13 @@ public class CasoDeUsoDTOInterface {
 
 	public void setAtorPrincipal(String atorPrincipal) {
 		this.atorPrincipal = atorPrincipal;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

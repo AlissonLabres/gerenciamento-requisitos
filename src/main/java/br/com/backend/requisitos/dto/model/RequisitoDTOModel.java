@@ -8,9 +8,17 @@ public class RequisitoDTOModel extends RequisitoDTOInteface {
 	public RequisitoDTOModel() {
 	}
 
-	public RequisitoDTOModel(Integer id, String idRequisito, String nome, String descricao, String importancia,
-			String fonte, String categoria) {
-		super(idRequisito, nome, descricao, importancia, fonte, categoria);
+	public RequisitoDTOModel(
+		Integer id,
+		String idRequisito,
+		String nome,
+		String descricao,
+		String importancia,
+		String fonte,
+		String categoria,
+		String status
+	) {
+		super(idRequisito, nome, descricao, importancia, fonte, categoria, status);
 		this.id = id;
 	}
 

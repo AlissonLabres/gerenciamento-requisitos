@@ -18,6 +18,7 @@ import br.com.backend.requisitos.entity.CasoDeUso;
 import br.com.backend.requisitos.entity.Integrante;
 import br.com.backend.requisitos.entity.Projeto;
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
+import br.com.backend.requisitos.enums.Status;
 import br.com.backend.requisitos.utils.Util;
 
 public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
@@ -58,6 +59,7 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			casoDeUso.setAtorPrincipal(c.getAtorPrincipal());
 			casoDeUso.setProjeto(projeto);
 			casoDeUso.setIntegrante(integrante);
+			casoDeUso.setStatus(Status.valueString(c.getStatus()));
 
 			List<CasoDeUso> projetoHasCasosDeUso = projeto.getCasosDeUso();
 			projetoHasCasosDeUso.add(casoDeUso);
@@ -87,7 +89,8 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 						c.getPosCondicao(),
 						c.getCenarioPrincipal(),
 						c.getExtensao(),
-						c.getAtorPrincipal()
+						c.getAtorPrincipal(),
+						c.getStatus().getValue()
 					)
 				);
 			}
@@ -124,7 +127,8 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 				casoDeUso.getAtorPrincipal(),
 				casoDeUso.getIntegrante(),
 				casoDeUso.getProjeto(),
-				casoDeUso.getArtefatos()
+				casoDeUso.getArtefatos(),
+				casoDeUso.getStatus().getValue()
 			);
 		} catch (Exception e) {
 			throw e;
@@ -159,6 +163,7 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			casoDeUso.setExtensao(c.getExtensao());
 			casoDeUso.setAtorPrincipal(c.getAtorPrincipal());
 			casoDeUso.setDataAlteracao(Util.currentDate());
+			casoDeUso.setStatus(Status.valueString(c.getStatus()));
 
 			casoDeUsoDAO.mergeFull(casoDeUso);
 		} catch (Exception e) {

@@ -12,18 +12,28 @@ public class RequisitoDTOInteface {
 	private String fonte;
 
 	private String categoria;
+	
+	private String status;
 
 	public RequisitoDTOInteface() {
 	}
 
-	public RequisitoDTOInteface(String idRequisito, String nome, String descricao, String importancia, String fonte,
-			String categoria) {
+	public RequisitoDTOInteface(
+		String idRequisito,
+		String nome,
+		String descricao,
+		String importancia,
+		String fonte,
+		String categoria,
+		String status
+	) {
 		this.idRequisito = new Double(idRequisito);
 		this.nome = nome;
 		this.descricao = descricao;
 		this.importancia = importancia;
 		this.fonte = fonte;
 		this.categoria = categoria;
+		this.status = status;
 	}
 
 	public Double getIdRequisito() {
@@ -72,5 +82,13 @@ public class RequisitoDTOInteface {
 
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

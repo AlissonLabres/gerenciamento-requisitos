@@ -2,6 +2,8 @@ package br.com.backend.requisitos.entity;
 
 import br.com.backend.requisitos.enums.CategoriaRequisito;
 import br.com.backend.requisitos.enums.ImportanciaRequisito;
+import br.com.backend.requisitos.enums.Status;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Calendar;
@@ -71,14 +73,29 @@ public class Requisito {
 	@OneToMany(mappedBy = "requisito", fetch = FetchType.EAGER)
 	@Column(name = "requisito_artefatos", nullable = true)
 	private List<Artefato> artefatos;
-
+	
+	@Enumerated
+	@Column(name = "requisito_status", nullable = false)
+	private Status status;
 
 	public Requisito() {
 	}
 
-	public Requisito(Integer id, String nome, String descricao, ImportanciaRequisito importancia, String fonte,
-			CategoriaRequisito categoria, Calendar dataInclusao, Calendar dataAlteracao, Projeto projeto,
-			Integrante integrante, List<Atividade> atividades, List<Artefato> artefatos) {
+	public Requisito(
+		Integer id,
+		String nome,
+		String descricao,
+		ImportanciaRequisito importancia,
+		String fonte,
+		CategoriaRequisito categoria,
+		Calendar dataInclusao,
+		Calendar dataAlteracao,
+		Projeto projeto,
+		Integrante integrante,
+		List<Atividade> atividades,
+		List<Artefato> artefatos,
+		Status status
+	) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
@@ -91,6 +108,7 @@ public class Requisito {
 		this.integrante = integrante;
 		this.atividades = atividades;
 		this.artefatos = artefatos;
+		this.status = status;
 	}
 
 	public Integer getId() {
@@ -197,6 +215,14 @@ public class Requisito {
 		this.artefatos = artefatos;
 	}
 
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -214,6 +240,7 @@ public class Requisito {
 		result = prime * result + ((integrante == null) ? 0 : integrante.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((projeto == null) ? 0 : projeto.hashCode());
+		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		return result;
 	}
 
@@ -284,6 +311,8 @@ public class Requisito {
 			if (other.projeto != null)
 				return false;
 		} else if (!projeto.equals(other.projeto))
+			return false;
+		if (status != other.status)
 			return false;
 		return true;
 	}

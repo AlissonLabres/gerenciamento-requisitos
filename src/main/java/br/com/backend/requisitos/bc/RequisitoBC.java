@@ -22,7 +22,7 @@ import br.com.backend.requisitos.entity.Requisito;
 import br.com.backend.requisitos.enums.CategoriaRequisito;
 import br.com.backend.requisitos.enums.ImportanciaRequisito;
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
-import br.com.backend.requisitos.enums.StatusAtividade;
+import br.com.backend.requisitos.enums.Status;
 import br.com.backend.requisitos.utils.Util;
 
 public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
@@ -63,6 +63,7 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 
 			requisito.setProjeto(projeto);
 			requisito.setIntegrante(integrante);
+			requisito.setStatus(Status.valueString(r.getStatus()));
 
 			List<Requisito> projetoHasRequisitos = projeto.getRequisitos();
 			projetoHasRequisitos.add(requisito);
@@ -90,7 +91,8 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 						r.getDescricao(),
 						r.getImportancia().getValue(),
 						r.getFonte(),
-						r.getCategoria().getValue()
+						r.getCategoria().getValue(),
+						r.getStatus().getValue()
 					)
 				);
 			}
@@ -126,7 +128,8 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 				requisito.getCategoria().getValue(),
 				integrante,
 				projeto,
-				requisito.getArtefatos()
+				requisito.getArtefatos(),
+				requisito.getStatus().getValue()
 			);
 				
 			if(!requisito.getArtefatos().isEmpty() && (requisitosDetalhados.getArtefatos().size() < requisito.getArtefatos().size())) {
@@ -170,6 +173,7 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 			requisito.setFonte(r.getFonte());
 			requisito.setCategoria(CategoriaRequisito.valueString(r.getCategoria()));
 			requisito.setDataAlteracao(Util.currentDate());
+			requisito.setStatus(Status.valueString(r.getStatus()));
 
 			requisitoDAO.mergeFull(requisito);
 		} catch (Exception e) {
@@ -197,7 +201,7 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 				throw new Exception("Integrante não tem permissão para excluir requisito");
 			
 			for(Atividade a : requisito.getAtividades())
-				if(!a.getStatus().equals(StatusAtividade.CONCLUIDO)) throw new Exception("Atividade deste requisito ainda não concluida."); 
+				if(!a.getStatus().equals(Status.CONCLUIDO)) throw new Exception("Atividade deste requisito ainda não concluida."); 
 
 			requisitoDAO.remove(idRequisito);
 		} catch (Exception e) {

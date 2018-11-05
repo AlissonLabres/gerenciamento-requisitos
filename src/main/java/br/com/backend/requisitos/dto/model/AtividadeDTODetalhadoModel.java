@@ -18,9 +18,16 @@ public class AtividadeDTODetalhadoModel extends AtividadeDTOModel {
 			Calendar dataFim, Calendar dataConclusao, Requisito requisito, Integrante criador,
 			List<Integrante> desenvolvedores) {
 		super(id, nome, descricao, status, dataInicio, dataFim, dataConclusao, criador, null);
-		this.requisito = new RequisitoDTOModel(requisito.getId(), requisito.getIdRequisito().toString(),
-				requisito.getNome(), requisito.getDescricao(), requisito.getImportancia().getValue(),
-				requisito.getFonte(), requisito.getCategoria().getValue());
+		this.requisito = new RequisitoDTOModel(
+			requisito.getId(),
+			requisito.getIdRequisito().toString(),
+			requisito.getNome(),
+			requisito.getDescricao(),
+			requisito.getImportancia().getValue(),
+			requisito.getFonte(),
+			requisito.getCategoria().getValue(),
+			requisito.getStatus().getValue()
+		);
 
 		this.desenvolvedores = listarDesenvolvedores(desenvolvedores);
 	}

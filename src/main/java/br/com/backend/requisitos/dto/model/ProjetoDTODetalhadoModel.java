@@ -12,10 +12,15 @@ import br.com.backend.requisitos.entity.Requisito;
 
 public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 	private String perfilIntegranteProjeto;
+	
 	private List<IntegranteDTOModel> integrantes;
+
 	private List<RequisitoDTOModel> requisitos;
+	
 	private List<CasoDeUsoDTOModel> casosDeUso;
+	
 	private List<AtividadeDTOModel> atividades;
+	
 	private List<ArtefatoDTOModel> artefatos;
 
 	public ProjetoDTODetalhadoModel() {
@@ -30,9 +35,10 @@ public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 		List<Requisito> requisitos,
 		List<Integrante> integrantes,
 		List<CasoDeUso> casosDeUso,
-		List<Artefato> artefatos
+		List<Artefato> artefatos,
+		String status
 	) {
-		super(id, nome, dataInicio, dataFim);
+		super(id, nome, dataInicio, dataFim, status);
 		this.perfilIntegranteProjeto = setIntegrante(integranteProjeto);
 		this.requisitos = listarRequisitos(requisitos);
 		this.atividades = listarAtividades(requisitos);
@@ -96,10 +102,20 @@ public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 		if (listaRequisitos.isEmpty()) {
 			return null;
 		}
-		List<RequisitoDTOModel> requisitosDTO = new ArrayList<RequisitoDTOModel>();
+		List<RequisitoDTOModel> requisitosDTO = new ArrayList<>();
 		for (Requisito r : listaRequisitos) {
-			requisitosDTO.add(new RequisitoDTOModel(r.getId(), r.getIdRequisito().toString(), r.getNome(),
-					r.getDescricao(), r.getImportancia().getValue(), r.getFonte(), r.getCategoria().getValue()));
+			requisitosDTO.add(
+				new RequisitoDTOModel(
+					r.getId(),
+					r.getIdRequisito().toString(),
+					r.getNome(),
+					r.getDescricao(),
+					r.getImportancia().getValue(),
+					r.getFonte(),
+					r.getCategoria().getValue(),
+					r.getStatus().getValue()
+				)
+			);
 		}
 
 		return requisitosDTO;
@@ -167,7 +183,8 @@ public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 					casoDeUso.getPosCondicao(),
 					casoDeUso.getCenarioPrincipal(),
 					casoDeUso.getExtensao(),
-					casoDeUso.getAtorPrincipal()
+					casoDeUso.getAtorPrincipal(),
+					casoDeUso.getStatus().getValue()
 				)
 			);
 		}

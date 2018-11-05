@@ -3,18 +3,19 @@ package br.com.backend.requisitos.enums;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public enum StatusAtividade
+public enum Status
 {
-  HAINICIAR(Integer.valueOf(0), "Ha iniciar"), 
-  DESENVOLVENDO(Integer.valueOf(1), "Desenvolvendo"), 
+  CRIANDO(Integer.valueOf(0), "Criando"), 
+  IMPLEMENTANDO(Integer.valueOf(1), "Implementado"), 
   TESTANDO(Integer.valueOf(2), "Testando"), 
-  PARADO(Integer.valueOf(3), "Parado"), 
-  CONCLUIDO(Integer.valueOf(4), "Concluido");
+  REJEITADO(Integer.valueOf(3), "Rejeitado"), 
+  CONCLUIDO(Integer.valueOf(4), "Concluido"),
+  PENDENTE(Integer.valueOf(5), "Pendente");
   
   private final Integer number;
   private final String value;
   
-  private StatusAtividade(Integer number, String value) {
+  private Status(Integer number, String value) {
     this.number = number;
     this.value = value;
   }
@@ -32,29 +33,29 @@ public enum StatusAtividade
     return value;
   }
   
-  public static StatusAtividade valueString(String _status) {
-    StatusAtividade statusEnum = null;
+  public static Status valueString(String _status) {
+    Status statusEnum = null;
     
-    for (StatusAtividade _statusString : values()) {
+    for (Status _statusString : values()) {
       if (_statusString.getValue().equals(_status)) { return statusEnum = _statusString;
       }
     }
     return statusEnum;
   }
   
-  public static Map<StatusAtividade, String> getPerfis() {
-    Map<StatusAtividade, String> map = new ConcurrentHashMap<StatusAtividade, String>();
-    for (StatusAtividade userType : values()) {
+  public static Map<Status, String> getPerfis() {
+    Map<Status, String> map = new ConcurrentHashMap<Status, String>();
+    for (Status userType : values()) {
       map.put(userType, userType.toString());
     }
     return map;
   }
   
-  public static StatusAtividade getPerfil(int codigoInt)
+  public static Status getPerfil(int codigoInt)
   {
-    StatusAtividade StatusEnum = null;
+    Status StatusEnum = null;
     
-    for (StatusAtividade _statusNumber : values()) {
+    for (Status _statusNumber : values()) {
       if (_statusNumber.getNumber().intValue() == codigoInt) { return StatusEnum = _statusNumber;
       }
     }

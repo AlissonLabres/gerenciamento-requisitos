@@ -32,9 +32,10 @@ public class CasoDeUsoDTODetalhadoModel extends CasoDeUsoDTOModel {
 		String atorPrincipal,
 		Integrante integrante,
 		Projeto projeto,
-		List<Artefato> artefatos
+		List<Artefato> artefatos,
+		String status
 	) {
-		super(id, nome, escopo, nivel, preCondicao, posCondicao, cenarioPrincipal, extensao, atorPrincipal);
+		super(id, nome, escopo, nivel, preCondicao, posCondicao, cenarioPrincipal, extensao, atorPrincipal, status);
 		
 		this.integrante = new IntegranteDTOModel(
 			integrante.getPerfilIntegranteProjeto().getValue(),
@@ -46,7 +47,8 @@ public class CasoDeUsoDTODetalhadoModel extends CasoDeUsoDTOModel {
 			projeto.getId(),
 			projeto.getNome(),
 			projeto.getDataInicio(),
-			projeto.getDataFim()
+			projeto.getDataFim(),
+			projeto.getStatus().getValue()
 		);
 		
 		this.artefatos = this.listArtefatos(artefatos);

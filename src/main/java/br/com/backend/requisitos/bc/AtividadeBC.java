@@ -17,7 +17,7 @@ import br.com.backend.requisitos.dto.model.AtividadeDTOModel;
 import br.com.backend.requisitos.entity.Atividade;
 import br.com.backend.requisitos.entity.Integrante;
 import br.com.backend.requisitos.entity.Requisito;
-import br.com.backend.requisitos.enums.StatusAtividade;
+import br.com.backend.requisitos.enums.Status;
 import br.com.backend.requisitos.utils.Util;
 
 public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
@@ -48,7 +48,7 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			atividade.setDataInicio(a.getDataInicio());
 			atividade.setDataFim(a.getDataFim());
 			atividade.setDataConclusao(a.getDataConclusao());
-			atividade.setStatus(StatusAtividade.valueString(a.getStatus()));
+			atividade.setStatus(Status.valueString(a.getStatus()));
 			atividade.setDataInclusao(Util.currentDate());
 
 			Integrante criador = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
@@ -143,7 +143,7 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			atividade.setDataInicio(a.getDataInicio());
 			atividade.setDataFim(a.getDataFim());
 			atividade.setDataConclusao(a.getDataConclusao());	
-			atividade.setStatus(StatusAtividade.valueString(a.getStatus()));
+			atividade.setStatus(Status.valueString(a.getStatus()));
 			atividade.setDataAlteracao(Util.currentDate());
 
 			atividadeDAO.mergeFull(atividade);

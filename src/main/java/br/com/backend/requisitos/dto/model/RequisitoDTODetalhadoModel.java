@@ -27,15 +27,21 @@ public class RequisitoDTODetalhadoModel extends RequisitoDTOModel {
 		String categoria,
 		Integrante integrante,
 		Projeto projeto,
-		List<Artefato> artefatos
+		List<Artefato> artefatos,
+		String status
 	) {
-		super(id, idRequisito, nome, descricao, importancia, fonte, categoria);
+		super(id, idRequisito, nome, descricao, importancia, fonte, categoria, status);
 
 		this.integrante = new IntegranteDTOModel(integrante.getPerfilIntegranteProjeto().getValue(),
 				integrante.getUsuario().getNome(), integrante.getId());
 
-		this.projeto = new ProjetoDTOModel(projeto.getId(), projeto.getNome(), projeto.getDataInicio(),
-				projeto.getDataFim());
+		this.projeto = new ProjetoDTOModel(
+			projeto.getId(),
+			projeto.getNome(),
+			projeto.getDataInicio(),
+			projeto.getDataFim(),
+			projeto.getStatus().getValue()
+		);
 		
 		if(!artefatos.isEmpty()) this.artefatos = this.listArtefatos(artefatos);
 	}

@@ -9,8 +9,8 @@ public class ProjetoDTOModel extends ProjetoDTOInterface {
 	public ProjetoDTOModel() {
 	}
 
-	public ProjetoDTOModel(Integer id, String nome, Calendar dataInicio, Calendar dataFim) {
-		super(nome, dataInicio, dataFim);
+	public ProjetoDTOModel(Integer id, String nome, Calendar dataInicio, Calendar dataFim, String status) {
+		super(nome, dataInicio, dataFim, status);
 		this.id = id;
 	}
 

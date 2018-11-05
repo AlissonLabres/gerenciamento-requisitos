@@ -10,9 +10,19 @@ public class CasoDeUsoDTOModel extends CasoDeUsoDTOInterface {
 		super();
 	}
 
-	public CasoDeUsoDTOModel(Integer id, String nome, String escopo, String nivel, String preCondicao,
-			String posCondicao, String cenarioPrincipal, String extensao, String atorPrincipal) {
-		super(nome, escopo, nivel, preCondicao, posCondicao, cenarioPrincipal, extensao, atorPrincipal);
+	public CasoDeUsoDTOModel(
+		Integer id,
+		String nome,
+		String escopo,
+		String nivel,
+		String preCondicao,
+		String posCondicao,
+		String cenarioPrincipal,
+		String extensao,
+		String atorPrincipal,
+		String status
+	) {
+		super(nome, escopo, nivel, preCondicao, posCondicao, cenarioPrincipal, extensao, atorPrincipal, status);
 		this.id = id;
 	}
 
