@@ -48,7 +48,7 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 
 			CasoDeUso casoDeUso = new CasoDeUso();
 			
-			casoDeUso.setDataInclusao(Util.currentDate());
+			casoDeUso.setInclusao(Util.logger(integrante.getId()));
 			casoDeUso.setNome(c.getNome());
 			casoDeUso.setEscopo(c.getEscopo());
 			casoDeUso.setNivel(c.getNivel());
@@ -162,7 +162,7 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			casoDeUso.setCenarioPrincipal(c.getCenarioPrincipal());
 			casoDeUso.setExtensao(c.getExtensao());
 			casoDeUso.setAtorPrincipal(c.getAtorPrincipal());
-			casoDeUso.setDataAlteracao(Util.currentDate());
+			casoDeUso.setAlteracao(Util.logger(integrante.getId()));
 			casoDeUso.setStatus(Status.valueString(c.getStatus()));
 
 			casoDeUsoDAO.mergeFull(casoDeUso);

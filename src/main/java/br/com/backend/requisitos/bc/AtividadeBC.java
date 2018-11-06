@@ -49,10 +49,9 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			atividade.setDataFim(a.getDataFim());
 			atividade.setDataConclusao(a.getDataConclusao());
 			atividade.setStatus(Status.valueString(a.getStatus()));
-			atividade.setDataInclusao(Util.currentDate());
 
 			Integrante criador = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
-			atividade.setCriador(criador);
+			atividade.setInclusao(Util.logger(criador.getId()));
 
 			Integrante desenvolvedor = (Integrante) integranteDAO.find(a.getIdDesenvolvedor());
 			List<Integrante> desenvolvedores = new ArrayList<Integrante>();
@@ -79,10 +78,16 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			for (Atividade atividade : atividades) {
 				List<Integrante> desenvolvedores = atividade.getDesenvolvedores();
 
-				atividadesDTO.add(new AtividadeDTOModel(atividade.getId(), atividade.getNome(),
-						atividade.getDescricao(), atividade.getStatus().getValue(), atividade.getDataInicio(),
-						atividade.getDataFim(), atividade.getDataConclusao(), atividade.getCriador(),
-						(Integrante) desenvolvedores.get(desenvolvedores.size() - 1)));
+				atividadesDTO.add(new AtividadeDTOModel(
+					atividade.getId(),
+					atividade.getNome(),
+					atividade.getDescricao(),
+					atividade.getStatus().getValue(),
+					atividade.getDataInicio(),
+					atividade.getDataFim(),
+					atividade.getDataConclusao(),
+					null,
+					desenvolvedores.get(desenvolvedores.size() - 1)));
 			}
 
 			return atividadesDTO;
@@ -100,7 +105,7 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 
 				atividadesDTO.add(new AtividadeDTOModel(atividade.getId(), atividade.getNome(),
 						atividade.getDescricao(), atividade.getStatus().getValue(), atividade.getDataInicio(),
-						atividade.getDataFim(), atividade.getDataConclusao(), atividade.getCriador(), 
+						atividade.getDataFim(), atividade.getDataConclusao(), null, 
 						desenvolvedores.get(desenvolvedores.size() - 1)));
 			}
 
@@ -119,7 +124,7 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 		
 		return new AtividadeDTODetalhadoModel(atividade.getId(), atividade.getNome(), atividade.getDescricao(),
 				atividade.getStatus().getValue(), atividade.getDataInicio(), atividade.getDataFim(),
-				atividade.getDataConclusao(), atividade.getRequisito(), atividade.getCriador(),
+				atividade.getDataConclusao(), atividade.getRequisito(), null,
 				desenvolvedores);
 	}
 
@@ -144,7 +149,7 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			atividade.setDataFim(a.getDataFim());
 			atividade.setDataConclusao(a.getDataConclusao());	
 			atividade.setStatus(Status.valueString(a.getStatus()));
-			atividade.setDataAlteracao(Util.currentDate());
+			atividade.setAlteracao(Util.logger(idUsuario));
 
 			atividadeDAO.mergeFull(atividade);
 		} catch (Exception e) {

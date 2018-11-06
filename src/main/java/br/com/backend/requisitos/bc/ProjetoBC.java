@@ -48,12 +48,12 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			projeto.setNome(p.getNome());
 			projeto.setDataInicio(p.getDataInicio());
 			projeto.setDataFim(p.getDataFim());
-			projeto.setDataInclusao(Util.currentDate());
+			projeto.setInclusao(Util.logger(usuario.getId()));
 			projeto.setStatus(Status.valueString(p.getStatus()));
 
 			integrante.setUsuario(usuario);
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.GERENTE);
-			integrante.setDataInclusao(Util.currentDate());
+			integrante.setInclusao(Util.logger(usuario.getId()));
 			integrante.setProjeto(projeto);
 
 			List<Integrante> integrantes = new ArrayList<Integrante>();
@@ -139,7 +139,7 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			projeto.setNome(p.getNome());
 			projeto.setDataInicio(p.getDataInicio());
 			projeto.setDataFim(p.getDataFim());
-			projeto.setDataAlteracao(Util.currentDate());
+			projeto.setAlteracao(Util.logger(usuario.getId()));
 			projeto.setStatus(Status.valueString(p.getStatus()));
 
 			projetoDAO.mergeFull(projeto);

@@ -124,7 +124,7 @@ public class IntegranteDTODetalhadoModel extends IntegranteDTOModel {
 					a.getDataInicio(),
 					a.getDataFim(),
 					a.getDataFim(),
-					a.getCriador(),
+					null,
 					a.getDesenvolvedores().get(a.getDesenvolvedores().size() - 1)
 				)
 			);

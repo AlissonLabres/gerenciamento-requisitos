@@ -28,6 +28,10 @@ public class Util {
 	public static Calendar currentDate() {
 		return Calendar.getInstance();
 	}
+	
+	public static LOG logger(Integer idIntegrante) {
+		return new LOG(idIntegrante, Util.currentDate());
+	}
 
 	public static void validarUsuario(UsuarioDTOInterface u) throws Exception {
 		try {

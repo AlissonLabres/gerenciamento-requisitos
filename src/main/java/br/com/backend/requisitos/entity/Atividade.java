@@ -1,8 +1,8 @@
 package br.com.backend.requisitos.entity;
 
-import br.com.backend.requisitos.enums.Status;
 import java.util.Calendar;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
+
+import br.com.backend.requisitos.enums.Status;
+import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -55,19 +58,15 @@ public class Atividade {
 	@Column(name = "atividade_data_fim", nullable = false)
 	private Calendar dataFim;
 	
-	@Column(name = "atividade_data_inclusao", nullable = false)
-	private Calendar dataInclusao;
+	@Column(name = "atividade_inclusao", nullable = false)
+	private LOG inclusao;
 	
-	@Column(name = "atividade_data_alteracao", nullable = true)
-	private Calendar dataAlteracao;
+	@Column(name = "atividade_alteracao", nullable = true)
+	private LOG alteracao;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "requisito_id", nullable = false)
 	private Requisito requisito;
-	
-	@ManyToOne
-	@JoinColumn(name = "integrante_id", nullable = false)
-	private Integrante criador;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "Atividade_has_Integrante", joinColumns = {
@@ -77,21 +76,30 @@ public class Atividade {
 	public Atividade() {
 	}
 
-	public Atividade(Integer id, String nome, String descricao, Status status, Calendar dataInicio,
-			Calendar dataFim, Calendar dataInclusao, Calendar dataConclusao, Calendar dataAlteracao,
-			Requisito requisito, Integrante criador, List<Integrante> integrantes) {
+	public Atividade(
+		Integer id,
+		String nome,
+		String descricao,
+		Status status,
+		Calendar dataInicio,
+		Calendar dataFim,
+		Calendar dataConclusao,
+		LOG inclusao,
+		LOG alteracao,
+		Requisito requisito,
+		List<Integrante> desenvolvedores
+	) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.status = status;
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
-		this.dataInclusao = dataInclusao;
+		this.inclusao = inclusao;
 		this.dataConclusao = dataConclusao;
-		this.dataAlteracao = dataAlteracao;
+		this.alteracao = alteracao;
 		this.requisito = requisito;
-		this.criador = criador;
-		desenvolvedores = integrantes;
+		this.desenvolvedores = desenvolvedores;
 	}
 
 	public Integer getId() {
@@ -150,20 +158,20 @@ public class Atividade {
 		this.dataConclusao = dataConclusao;
 	}
 
-	public Calendar getDataInclusao() {
-		return dataInclusao;
+	public LOG getInclusao() {
+		return inclusao;
 	}
 
-	public void setDataInclusao(Calendar dataInclusao) {
-		this.dataInclusao = dataInclusao;
+	public void setInclusao(LOG inclusao) {
+		this.inclusao = inclusao;
 	}
 
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
+	public LOG getAlteracao() {
+		return alteracao;
 	}
 
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
+	public void setAlteracao(LOG alteracao) {
+		this.alteracao = alteracao;
 	}
 
 	public Requisito getRequisito() {
@@ -172,14 +180,6 @@ public class Atividade {
 
 	public void setRequisito(Requisito requisito) {
 		this.requisito = requisito;
-	}
-
-	public Integrante getCriador() {
-		return criador;
-	}
-
-	public void setCriador(Integrante criador) {
-		this.criador = criador;
 	}
 
 	public List<Integrante> getDesenvolvedores() {
@@ -194,15 +194,14 @@ public class Atividade {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((criador == null) ? 0 : criador.hashCode());
-		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
+		result = prime * result + ((alteracao == null) ? 0 : alteracao.hashCode());
 		result = prime * result + ((dataConclusao == null) ? 0 : dataConclusao.hashCode());
 		result = prime * result + ((dataFim == null) ? 0 : dataFim.hashCode());
-		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((dataInicio == null) ? 0 : dataInicio.hashCode());
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((desenvolvedores == null) ? 0 : desenvolvedores.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((inclusao == null) ? 0 : inclusao.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((requisito == null) ? 0 : requisito.hashCode());
 		result = prime * result + ((status == null) ? 0 : status.hashCode());
@@ -218,15 +217,10 @@ public class Atividade {
 		if (getClass() != obj.getClass())
 			return false;
 		Atividade other = (Atividade) obj;
-		if (criador == null) {
-			if (other.criador != null)
+		if (alteracao == null) {
+			if (other.alteracao != null)
 				return false;
-		} else if (!criador.equals(other.criador))
-			return false;
-		if (dataAlteracao == null) {
-			if (other.dataAlteracao != null)
-				return false;
-		} else if (!dataAlteracao.equals(other.dataAlteracao))
+		} else if (!alteracao.equals(other.alteracao))
 			return false;
 		if (dataConclusao == null) {
 			if (other.dataConclusao != null)
@@ -237,11 +231,6 @@ public class Atividade {
 			if (other.dataFim != null)
 				return false;
 		} else if (!dataFim.equals(other.dataFim))
-			return false;
-		if (dataInclusao == null) {
-			if (other.dataInclusao != null)
-				return false;
-		} else if (!dataInclusao.equals(other.dataInclusao))
 			return false;
 		if (dataInicio == null) {
 			if (other.dataInicio != null)
@@ -262,6 +251,11 @@ public class Atividade {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (inclusao == null) {
+			if (other.inclusao != null)
+				return false;
+		} else if (!inclusao.equals(other.inclusao))
 			return false;
 		if (nome == null) {
 			if (other.nome != null)

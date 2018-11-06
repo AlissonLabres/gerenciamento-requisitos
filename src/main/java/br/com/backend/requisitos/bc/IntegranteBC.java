@@ -53,7 +53,7 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 			}
 
 			Integrante integrante = new Integrante();
-			integrante.setDataInclusao(Util.currentDate());
+			integrante.setInclusao(Util.logger(integrante.getId()));
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.valueString(i.getPerfilIntegrante()));
 			integrante.setUsuario(usuario);
 			integrante.setProjeto(projeto);
@@ -145,7 +145,7 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 				throw new Exception("Não é possivel alterar o perfil do Gerente");
 			
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.valueString(i.getPerfilIntegrante()));
-			integrante.setDataAlteracao(Util.currentDate());
+			integrante.setAlteracao(Util.logger(integrante.getId()));
 
 			integranteDAO.mergeFull(integrante);
 		} catch (Exception e) {

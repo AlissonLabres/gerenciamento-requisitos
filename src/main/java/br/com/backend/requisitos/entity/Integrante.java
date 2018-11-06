@@ -1,6 +1,5 @@
 package br.com.backend.requisitos.entity;
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,9 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
+import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -35,13 +33,11 @@ public class Integrante {
 	@Column(name = "integrante_perfil_usuario_projeto", nullable = false)
 	private PerfilIntegranteProjeto perfilIntegranteProjeto;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "integrante_data_inclusao", nullable = false)
-	private Calendar dataInclusao;
+	@Column(name = "integrante_inclusao", nullable = false)
+	private LOG inclusao;
 	
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "integrante_data_alteracao", nullable = true)
-	private Calendar dataAlteracao;
+	@Column(name = "integrante_alteracao", nullable = true)
+	private LOG alteracao;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id", nullable = false)
@@ -56,7 +52,7 @@ public class Integrante {
 	private List<Requisito> requisitos;
 	
 	@OneToMany(mappedBy = "integrante", fetch = FetchType.EAGER)
-	@Column(name = "integrante_casoDeUsos", nullable = true)
+	@Column(name = "integrante_casos_de_uso", nullable = true)
 	private List<CasoDeUso> casosDeUso;
 
 	@ManyToMany(mappedBy = "desenvolvedores", fetch = FetchType.EAGER)
@@ -72,17 +68,24 @@ public class Integrante {
 		usuario = integrante.usuario;
 		projeto = integrante.projeto;
 		requisitos = integrante.requisitos;
-		casosDeUso = integrante.casosDeUso;
 		atividades = integrante.atividades;
 	}
 
-	public Integrante(Integer id, PerfilIntegranteProjeto perfilIntegranteProjeto, Calendar dataInclusao,
-			Calendar dataAlteracao, Usuario usuario, Projeto projeto, List<Requisito> requisitos,
-			List<CasoDeUso> casosDeUso, List<Atividade> atividades) {
+	public Integrante(
+		Integer id,
+		PerfilIntegranteProjeto perfilIntegranteProjeto,
+		LOG inclusao,
+		LOG alteracao,
+		Usuario usuario,
+		Projeto projeto,
+		List<Requisito> requisitos,
+		List<CasoDeUso> casosDeUso,
+		List<Atividade> atividades
+	) {
 		this.id = id;
 		this.perfilIntegranteProjeto = perfilIntegranteProjeto;
-		this.dataInclusao = dataInclusao;
-		this.dataAlteracao = dataAlteracao;
+		this.inclusao = inclusao;
+		this.alteracao = alteracao;
 		this.usuario = usuario;
 		this.projeto = projeto;
 		this.requisitos = requisitos;
@@ -106,20 +109,20 @@ public class Integrante {
 		this.perfilIntegranteProjeto = perfilIntegranteProjeto;
 	}
 
-	public Calendar getDataInclusao() {
-		return dataInclusao;
+	public LOG getInclusao() {
+		return inclusao;
 	}
 
-	public void setDataInclusao(Calendar dataInclusao) {
-		this.dataInclusao = dataInclusao;
+	public void setInclusao(LOG inclusao) {
+		this.inclusao = inclusao;
 	}
 
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
+	public LOG getAlteracao() {
+		return alteracao;
 	}
 
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
+	public void setAlteracao(LOG alteracao) {
+		this.alteracao = alteracao;
 	}
 
 	public Usuario getUsuario() {
@@ -166,11 +169,11 @@ public class Integrante {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((alteracao == null) ? 0 : alteracao.hashCode());
 		result = prime * result + ((atividades == null) ? 0 : atividades.hashCode());
 		result = prime * result + ((casosDeUso == null) ? 0 : casosDeUso.hashCode());
-		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
-		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((inclusao == null) ? 0 : inclusao.hashCode());
 		result = prime * result + ((perfilIntegranteProjeto == null) ? 0 : perfilIntegranteProjeto.hashCode());
 		result = prime * result + ((projeto == null) ? 0 : projeto.hashCode());
 		result = prime * result + ((requisitos == null) ? 0 : requisitos.hashCode());
@@ -187,6 +190,11 @@ public class Integrante {
 		if (getClass() != obj.getClass())
 			return false;
 		Integrante other = (Integrante) obj;
+		if (alteracao == null) {
+			if (other.alteracao != null)
+				return false;
+		} else if (!alteracao.equals(other.alteracao))
+			return false;
 		if (atividades == null) {
 			if (other.atividades != null)
 				return false;
@@ -197,20 +205,15 @@ public class Integrante {
 				return false;
 		} else if (!casosDeUso.equals(other.casosDeUso))
 			return false;
-		if (dataAlteracao == null) {
-			if (other.dataAlteracao != null)
-				return false;
-		} else if (!dataAlteracao.equals(other.dataAlteracao))
-			return false;
-		if (dataInclusao == null) {
-			if (other.dataInclusao != null)
-				return false;
-		} else if (!dataInclusao.equals(other.dataInclusao))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (inclusao == null) {
+			if (other.inclusao != null)
+				return false;
+		} else if (!inclusao.equals(other.inclusao))
 			return false;
 		if (perfilIntegranteProjeto != other.perfilIntegranteProjeto)
 			return false;

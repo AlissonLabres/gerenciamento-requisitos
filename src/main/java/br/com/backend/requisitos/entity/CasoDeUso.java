@@ -1,6 +1,5 @@
 package br.com.backend.requisitos.entity;
 
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -17,6 +16,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import br.com.backend.requisitos.enums.Status;
+import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -63,19 +63,15 @@ public class CasoDeUso {
 	@Column(name = "caso_de_uso_extensao", nullable = false)
 	private String extensao;
 
-	@Column(name = "caso_de_uso_data_inclusao", nullable = false)
-	private Calendar dataInclusao;
+	@Column(name = "caso_de_uso_inclusao", nullable = false)
+	private LOG inclusao;
 
-	@Column(name = "caso_de_uso_data_alteracao", nullable = true)
-	private Calendar dataAlteracao;
+	@Column(name = "caso_de_uso_alteracao", nullable = true)
+	private LOG alteracao;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
 	private Projeto projeto;
-	
-	@ManyToOne
-	@JoinColumn(name = "integrante_id", nullable = false)
-	private Integrante integrante;
 
 	@OneToMany(mappedBy = "casoDeUso", fetch = FetchType.EAGER)
 	@Column(name = "caso_de_uso_artefatos", nullable = true)
@@ -85,21 +81,37 @@ public class CasoDeUso {
 	@Column(name = "caso_de_uso_status", nullable = false)
 	private Status status;
 
+	@ManyToOne
+	@JoinColumn(name = "integrante_id", nullable = false)
+	private Integrante integrante;
+
 	public CasoDeUso() {
 	}
 
-	public CasoDeUso(Integer id, String nome, String escopo, String nivel, String atorPrincipal,
-			String preCondicao, Calendar dataInclusao, Calendar dataAlteracao, Projeto projeto, Integrante integrante) {
+	public CasoDeUso(
+		Integer id,
+		String nome,
+		String escopo,
+		String nivel,
+		String atorPrincipal,
+		String preCondicao,
+		LOG inclusao,
+		LOG alteracao,
+		Projeto projeto,
+		Status status,
+		List<Artefato> artefatos
+	) {
 		this.id = id;
 		this.nome = nome;
 		this.escopo = escopo;
 		this.nivel = nivel;
 		this.atorPrincipal = atorPrincipal;
 		this.preCondicao = preCondicao;
-		this.dataInclusao = dataInclusao;
-		this.dataAlteracao = dataAlteracao;
+		this.inclusao = inclusao;
+		this.alteracao = alteracao;
 		this.projeto = projeto;
-		this.integrante = integrante;
+		this.status = status;
+		this.artefatos = artefatos;
 	}
 
 	public Integer getId() {
@@ -174,20 +186,20 @@ public class CasoDeUso {
 		this.extensao = extensao;
 	}
 
-	public Calendar getDataInclusao() {
-		return dataInclusao;
+	public LOG getInclusao() {
+		return inclusao;
 	}
 
-	public void setDataInclusao(Calendar dataInclusao) {
-		this.dataInclusao = dataInclusao;
+	public void setInclusao(LOG inclusao) {
+		this.inclusao = inclusao;
 	}
 
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
+	public LOG getAlteracao() {
+		return alteracao;
 	}
 
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
+	public void setAlteracao(LOG alteracao) {
+		this.alteracao = alteracao;
 	}
 
 	public Projeto getProjeto() {
@@ -196,14 +208,6 @@ public class CasoDeUso {
 
 	public void setProjeto(Projeto projeto) {
 		this.projeto = projeto;
-	}
-
-	public Integrante getIntegrante() {
-		return integrante;
-	}
-
-	public void setIntegrante(Integrante integrante) {
-		this.integrante = integrante;
 	}
 
 	public List<Artefato> getArtefatos() {
@@ -222,18 +226,26 @@ public class CasoDeUso {
 		this.status = status;
 	}
 
+	public Integrante getIntegrante() {
+		return integrante;
+	}
+
+	public void setIntegrante(Integrante integrante) {
+		this.integrante = integrante;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((alteracao == null) ? 0 : alteracao.hashCode());
 		result = prime * result + ((artefatos == null) ? 0 : artefatos.hashCode());
 		result = prime * result + ((atorPrincipal == null) ? 0 : atorPrincipal.hashCode());
 		result = prime * result + ((cenarioPrincipal == null) ? 0 : cenarioPrincipal.hashCode());
-		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
-		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((escopo == null) ? 0 : escopo.hashCode());
 		result = prime * result + ((extensao == null) ? 0 : extensao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((inclusao == null) ? 0 : inclusao.hashCode());
 		result = prime * result + ((integrante == null) ? 0 : integrante.hashCode());
 		result = prime * result + ((nivel == null) ? 0 : nivel.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
@@ -253,6 +265,11 @@ public class CasoDeUso {
 		if (getClass() != obj.getClass())
 			return false;
 		CasoDeUso other = (CasoDeUso) obj;
+		if (alteracao == null) {
+			if (other.alteracao != null)
+				return false;
+		} else if (!alteracao.equals(other.alteracao))
+			return false;
 		if (artefatos == null) {
 			if (other.artefatos != null)
 				return false;
@@ -268,16 +285,6 @@ public class CasoDeUso {
 				return false;
 		} else if (!cenarioPrincipal.equals(other.cenarioPrincipal))
 			return false;
-		if (dataAlteracao == null) {
-			if (other.dataAlteracao != null)
-				return false;
-		} else if (!dataAlteracao.equals(other.dataAlteracao))
-			return false;
-		if (dataInclusao == null) {
-			if (other.dataInclusao != null)
-				return false;
-		} else if (!dataInclusao.equals(other.dataInclusao))
-			return false;
 		if (escopo == null) {
 			if (other.escopo != null)
 				return false;
@@ -292,6 +299,11 @@ public class CasoDeUso {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (inclusao == null) {
+			if (other.inclusao != null)
+				return false;
+		} else if (!inclusao.equals(other.inclusao))
 			return false;
 		if (integrante == null) {
 			if (other.integrante != null)

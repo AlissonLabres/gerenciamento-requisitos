@@ -137,7 +137,7 @@ public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 						a.getDataInicio(),
 						a.getDataFim(),
 						a.getDataConclusao(),
-						a.getCriador(),
+						null,
 						a.getDesenvolvedores().get(a.getDesenvolvedores().size() - 1)
 					)
 				);

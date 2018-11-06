@@ -1,13 +1,7 @@
 package br.com.backend.requisitos.entity;
 
-import br.com.backend.requisitos.enums.CategoriaRequisito;
-import br.com.backend.requisitos.enums.ImportanciaRequisito;
-import br.com.backend.requisitos.enums.Status;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Calendar;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -19,6 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
+
+import br.com.backend.requisitos.enums.CategoriaRequisito;
+import br.com.backend.requisitos.enums.ImportanciaRequisito;
+import br.com.backend.requisitos.enums.Status;
+import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -33,13 +32,11 @@ public class Requisito {
 	@Column(name = "requisito_idRequisito", nullable = false)
 	private Double idRequisito;
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "requisito_data_inclusao", nullable = false)
-	private Calendar dataInclusao;
+	@Column(name = "requisito_inclusao", nullable = false)
+	private LOG inclusao;
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "requisito_data_alteracao", nullable = true)
-	private Calendar dataAlteracao;
+	@Column(name = "requisito_alteracao", nullable = true)
+	private LOG alteracao;
 
 	@Column(name = "requisito_nome", nullable = false)
 	private String nome;
@@ -65,7 +62,6 @@ public class Requisito {
 	@JoinColumn(name = "integrante_id", nullable = false)
 	private Integrante integrante;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "requisito", fetch = FetchType.EAGER)
 	@Column(name = "requisito_atividades", nullable = true)
 	private List<Atividade> atividades;
@@ -88,8 +84,8 @@ public class Requisito {
 		ImportanciaRequisito importancia,
 		String fonte,
 		CategoriaRequisito categoria,
-		Calendar dataInclusao,
-		Calendar dataAlteracao,
+		LOG inclusao,
+		LOG alteracao,
 		Projeto projeto,
 		Integrante integrante,
 		List<Atividade> atividades,
@@ -102,8 +98,8 @@ public class Requisito {
 		this.importancia = importancia;
 		this.fonte = fonte;
 		this.categoria = categoria;
-		this.dataInclusao = dataInclusao;
-		this.dataAlteracao = dataAlteracao;
+		this.inclusao = inclusao;
+		this.alteracao = alteracao;
 		this.projeto = projeto;
 		this.integrante = integrante;
 		this.atividades = atividades;
@@ -167,20 +163,20 @@ public class Requisito {
 		this.categoria = categoria;
 	}
 
-	public Calendar getDataInclusao() {
-		return dataInclusao;
+	public LOG getInclusao() {
+		return inclusao;
 	}
 
-	public void setDataInclusao(Calendar dataInclusao) {
-		this.dataInclusao = dataInclusao;
+	public void setInclusao(LOG inclusao) {
+		this.inclusao = inclusao;
 	}
 
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
+	public LOG getAlteracao() {
+		return alteracao;
 	}
 
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
+	public void setAlteracao(LOG alteracao) {
+		this.alteracao = alteracao;
 	}
 
 	public Projeto getProjeto() {
@@ -227,16 +223,16 @@ public class Requisito {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((alteracao == null) ? 0 : alteracao.hashCode());
 		result = prime * result + ((artefatos == null) ? 0 : artefatos.hashCode());
 		result = prime * result + ((atividades == null) ? 0 : atividades.hashCode());
 		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
-		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
-		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((fonte == null) ? 0 : fonte.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((idRequisito == null) ? 0 : idRequisito.hashCode());
 		result = prime * result + ((importancia == null) ? 0 : importancia.hashCode());
+		result = prime * result + ((inclusao == null) ? 0 : inclusao.hashCode());
 		result = prime * result + ((integrante == null) ? 0 : integrante.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((projeto == null) ? 0 : projeto.hashCode());
@@ -253,6 +249,11 @@ public class Requisito {
 		if (getClass() != obj.getClass())
 			return false;
 		Requisito other = (Requisito) obj;
+		if (alteracao == null) {
+			if (other.alteracao != null)
+				return false;
+		} else if (!alteracao.equals(other.alteracao))
+			return false;
 		if (artefatos == null) {
 			if (other.artefatos != null)
 				return false;
@@ -264,16 +265,6 @@ public class Requisito {
 		} else if (!atividades.equals(other.atividades))
 			return false;
 		if (categoria != other.categoria)
-			return false;
-		if (dataAlteracao == null) {
-			if (other.dataAlteracao != null)
-				return false;
-		} else if (!dataAlteracao.equals(other.dataAlteracao))
-			return false;
-		if (dataInclusao == null) {
-			if (other.dataInclusao != null)
-				return false;
-		} else if (!dataInclusao.equals(other.dataInclusao))
 			return false;
 		if (descricao == null) {
 			if (other.descricao != null)
@@ -296,6 +287,11 @@ public class Requisito {
 		} else if (!idRequisito.equals(other.idRequisito))
 			return false;
 		if (importancia != other.importancia)
+			return false;
+		if (inclusao == null) {
+			if (other.inclusao != null)
+				return false;
+		} else if (!inclusao.equals(other.inclusao))
 			return false;
 		if (integrante == null) {
 			if (other.integrante != null)

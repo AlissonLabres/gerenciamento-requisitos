@@ -55,9 +55,8 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 				throw new Exception("Usuário não encontrado");
 	
 			Artefato artefato = new Artefato();
-			artefato.setCriador(criador);
+			artefato.setInclusao(Util.logger(criador.getId()));
 			artefato.setProjeto(projeto);
-			artefato.setDataInclusao(Util.currentDate());
 			artefato.setDescricao(a.getDescricao());
 			artefato.setNome(a.getNome());
 			
@@ -245,9 +244,8 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			if(artefato == null)
 				throw new Exception("Atividade não encontrada");
 
-			artefato.setCriador(criador);
+			artefato.setAlteracao(Util.logger(criador.getId()));
 			artefato.setProjeto(projeto);
-			artefato.setDataAlteracao(Util.currentDate());
 			artefato.setDescricao(a.getDescricao());
 			artefato.setNome(a.getNome());
 			

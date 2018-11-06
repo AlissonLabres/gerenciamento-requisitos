@@ -1,7 +1,6 @@
 package br.com.backend.requisitos.bc;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,9 +50,7 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 				throw new Exception("Usuario não encontrado");
 
 			Requisito requisito = new Requisito();
-			Calendar date = Calendar.getInstance();
-
-			requisito.setDataInclusao(date);
+			requisito.setInclusao(Util.logger(integrante.getId()));
 			requisito.setIdRequisito(r.getIdRequisito());
 			requisito.setNome(r.getNome());
 			requisito.setDescricao(r.getDescricao());
@@ -172,7 +169,7 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 			requisito.setImportancia(ImportanciaRequisito.valueString(r.getImportancia()));
 			requisito.setFonte(r.getFonte());
 			requisito.setCategoria(CategoriaRequisito.valueString(r.getCategoria()));
-			requisito.setDataAlteracao(Util.currentDate());
+			requisito.setAlteracao(Util.logger(integrante.getId()));
 			requisito.setStatus(Status.valueString(r.getStatus()));
 
 			requisitoDAO.mergeFull(requisito);

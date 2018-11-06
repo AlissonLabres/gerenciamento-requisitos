@@ -3,6 +3,7 @@ package br.com.backend.requisitos.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.backend.requisitos.enums.Status;
+import br.com.backend.requisitos.utils.LOG;
 
 import java.util.Calendar;
 import java.util.List;
@@ -38,13 +39,11 @@ public class Projeto {
 	@Column(name = "projeto_data_fim", nullable = false)
 	private Calendar dataFim;
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "projeto_data_inclusao", nullable = false)
-	private Calendar dataInclusao;
+	@Column(name = "projeto_inclusao", nullable = false)
+	private LOG inclusao;
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "projeto_data_alteracao", nullable = true)
-	private Calendar dataAlteracao;
+	@Column(name = "projeto_alteracao", nullable = true)
+	private LOG alteracao;
 
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
 	@Column(name = "requisitos", nullable = true)
@@ -71,8 +70,8 @@ public class Projeto {
 		nome = projeto.nome;
 		dataInicio = projeto.dataInicio;
 		dataFim = projeto.dataFim;
-		dataInclusao = projeto.dataInclusao;
-		dataAlteracao = projeto.dataAlteracao;
+		inclusao = projeto.inclusao;
+		alteracao = projeto.alteracao;
 		requisitos = projeto.requisitos;
 		casosDeUso = projeto.casosDeUso;
 		integrantes = projeto.integrantes;
@@ -88,8 +87,8 @@ public class Projeto {
 		String nome,
 		Calendar dataInicio,
 		Calendar dataFim,
-		Calendar dataInclusao,
-		Calendar dataAlteracao,
+		LOG inclusao,
+		LOG alteracao,
 		List<Requisito> requisitos,
 		List<CasoDeUso> casosDeUso,
 		List<Integrante> integrantes,
@@ -100,8 +99,8 @@ public class Projeto {
 		this.nome = nome;
 		this.dataInicio = dataInicio;
 		this.dataFim = dataFim;
-		this.dataInclusao = dataInclusao;
-		this.dataAlteracao = dataAlteracao;
+		this.inclusao = inclusao;
+		this.alteracao = alteracao;
 		this.requisitos = requisitos;
 		this.casosDeUso = casosDeUso;
 		this.integrantes = integrantes;
@@ -141,20 +140,20 @@ public class Projeto {
 		this.dataFim = dataFim;
 	}
 
-	public Calendar getDataInclusao() {
-		return dataInclusao;
+	public LOG getInclusao() {
+		return inclusao;
 	}
 
-	public void setDataInclusao(Calendar dataInclusao) {
-		this.dataInclusao = dataInclusao;
+	public void setInclusao(LOG inclusao) {
+		this.inclusao = inclusao;
 	}
 
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
+	public LOG getAlteracao() {
+		return alteracao;
 	}
 
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
+	public void setAlteracao(LOG alteracao) {
+		this.alteracao = alteracao;
 	}
 
 	public List<Requisito> getRequisitos() {
@@ -201,13 +200,13 @@ public class Projeto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((alteracao == null) ? 0 : alteracao.hashCode());
 		result = prime * result + ((artefatos == null) ? 0 : artefatos.hashCode());
 		result = prime * result + ((casosDeUso == null) ? 0 : casosDeUso.hashCode());
-		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
 		result = prime * result + ((dataFim == null) ? 0 : dataFim.hashCode());
-		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((dataInicio == null) ? 0 : dataInicio.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((inclusao == null) ? 0 : inclusao.hashCode());
 		result = prime * result + ((integrantes == null) ? 0 : integrantes.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((requisitos == null) ? 0 : requisitos.hashCode());
@@ -224,6 +223,11 @@ public class Projeto {
 		if (getClass() != obj.getClass())
 			return false;
 		Projeto other = (Projeto) obj;
+		if (alteracao == null) {
+			if (other.alteracao != null)
+				return false;
+		} else if (!alteracao.equals(other.alteracao))
+			return false;
 		if (artefatos == null) {
 			if (other.artefatos != null)
 				return false;
@@ -234,20 +238,10 @@ public class Projeto {
 				return false;
 		} else if (!casosDeUso.equals(other.casosDeUso))
 			return false;
-		if (dataAlteracao == null) {
-			if (other.dataAlteracao != null)
-				return false;
-		} else if (!dataAlteracao.equals(other.dataAlteracao))
-			return false;
 		if (dataFim == null) {
 			if (other.dataFim != null)
 				return false;
 		} else if (!dataFim.equals(other.dataFim))
-			return false;
-		if (dataInclusao == null) {
-			if (other.dataInclusao != null)
-				return false;
-		} else if (!dataInclusao.equals(other.dataInclusao))
 			return false;
 		if (dataInicio == null) {
 			if (other.dataInicio != null)
@@ -258,6 +252,11 @@ public class Projeto {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (inclusao == null) {
+			if (other.inclusao != null)
+				return false;
+		} else if (!inclusao.equals(other.inclusao))
 			return false;
 		if (integrantes == null) {
 			if (other.integrantes != null)

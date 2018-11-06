@@ -1,7 +1,5 @@
 package br.com.backend.requisitos.entity;
 
-import java.util.Calendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+
+import br.com.backend.requisitos.utils.LOG;
 
 @NamedQueries({
 	@NamedQuery(
@@ -57,8 +57,8 @@ public class Artefato {
 	@Column(name = "artefato_descricao", nullable = false)
 	private String descricao;
 	
-	@Column(name = "artefato_data_inclusao", nullable = false)
-	private Calendar dataInclusao;
+	@Column(name = "artefato_inclusao", nullable = false)
+	private LOG inclusao;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "projeto_id", nullable = false)
@@ -71,13 +71,9 @@ public class Artefato {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "caso_de_uso_id", nullable = true)
 	private CasoDeUso casoDeUso;
-
-	@ManyToOne
-	@JoinColumn(name = "integrante_id", nullable = false)
-	private Integrante criador;
 	
-	@Column(name = "artefato_data_alteracao", nullable = true)
-	private Calendar dataAlteracao;
+	@Column(name = "artefato_alteracao", nullable = true)
+	private LOG alteracao;
 	
 	@OneToOne(orphanRemoval = true)
     @JoinColumn(name = "arquivo_id", nullable = true)
@@ -86,16 +82,23 @@ public class Artefato {
 	public Artefato() {
 	}	
 
-	public Artefato(Integer id, String nome, String descricao, Calendar dataInclusao, Requisito requisito,
-			CasoDeUso casoDeUso, Integrante criador, Integrante modificador, Calendar dataAlteracao, Arquivo arquivo) {
+	public Artefato(
+		Integer id,
+		String nome,
+		String descricao,
+		LOG inclusao,
+		Requisito requisito,
+		CasoDeUso casoDeUso,
+		LOG alteracao,
+		Arquivo arquivo
+	) {
 		this.id = id;
 		this.nome = nome;
 		this.descricao = descricao;
-		this.dataInclusao = dataInclusao;
+		this.inclusao = inclusao;
 		this.requisito = requisito;
 		this.casoDeUso = casoDeUso;
-		this.criador = criador;
-		this.dataAlteracao = dataAlteracao;
+		this.alteracao = alteracao;
 		this.arquivo = arquivo;
 	}
 
@@ -128,16 +131,13 @@ public class Artefato {
 		this.descricao = descricao;
 	}
 
-
-	public Calendar getDataInclusao() {
-		return dataInclusao;
+	public LOG getInclusao() {
+		return inclusao;
 	}
 
-
-	public void setDataInclusao(Calendar dataInclusao) {
-		this.dataInclusao = dataInclusao;
+	public void setInclusao(LOG inclusao) {
+		this.inclusao = inclusao;
 	}
-
 
 	public Projeto getProjeto() {
 		return projeto;
@@ -166,23 +166,12 @@ public class Artefato {
 		this.casoDeUso = casoDeUso;
 	}
 
-
-	public Integrante getCriador() {
-		return criador;
+	public LOG getAlteracao() {
+		return alteracao;
 	}
 
-
-	public void setCriador(Integrante criador) {
-		this.criador = criador;
-	}
-
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
-	}
-
-
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
+	public void setAlteracao(LOG alteracao) {
+		this.alteracao = alteracao;
 	}
 
 	public Arquivo getArquivo() {
@@ -197,14 +186,14 @@ public class Artefato {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((alteracao == null) ? 0 : alteracao.hashCode());
 		result = prime * result + ((arquivo == null) ? 0 : arquivo.hashCode());
 		result = prime * result + ((casoDeUso == null) ? 0 : casoDeUso.hashCode());
-		result = prime * result + ((criador == null) ? 0 : criador.hashCode());
-		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
-		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((inclusao == null) ? 0 : inclusao.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((projeto == null) ? 0 : projeto.hashCode());
 		result = prime * result + ((requisito == null) ? 0 : requisito.hashCode());
 		return result;
 	}
@@ -218,6 +207,11 @@ public class Artefato {
 		if (getClass() != obj.getClass())
 			return false;
 		Artefato other = (Artefato) obj;
+		if (alteracao == null) {
+			if (other.alteracao != null)
+				return false;
+		} else if (!alteracao.equals(other.alteracao))
+			return false;
 		if (arquivo == null) {
 			if (other.arquivo != null)
 				return false;
@@ -227,21 +221,6 @@ public class Artefato {
 			if (other.casoDeUso != null)
 				return false;
 		} else if (!casoDeUso.equals(other.casoDeUso))
-			return false;
-		if (criador == null) {
-			if (other.criador != null)
-				return false;
-		} else if (!criador.equals(other.criador))
-			return false;
-		if (dataAlteracao == null) {
-			if (other.dataAlteracao != null)
-				return false;
-		} else if (!dataAlteracao.equals(other.dataAlteracao))
-			return false;
-		if (dataInclusao == null) {
-			if (other.dataInclusao != null)
-				return false;
-		} else if (!dataInclusao.equals(other.dataInclusao))
 			return false;
 		if (descricao == null) {
 			if (other.descricao != null)
@@ -253,10 +232,20 @@ public class Artefato {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (inclusao == null) {
+			if (other.inclusao != null)
+				return false;
+		} else if (!inclusao.equals(other.inclusao))
+			return false;
 		if (nome == null) {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
+			return false;
+		if (projeto == null) {
+			if (other.projeto != null)
+				return false;
+		} else if (!projeto.equals(other.projeto))
 			return false;
 		if (requisito == null) {
 			if (other.requisito != null)
