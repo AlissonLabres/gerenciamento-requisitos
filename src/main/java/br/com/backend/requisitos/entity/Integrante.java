@@ -16,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
 
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
-import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -32,12 +31,14 @@ public class Integrante {
 	@Enumerated
 	@Column(name = "integrante_perfil_usuario_projeto", nullable = false)
 	private PerfilIntegranteProjeto perfilIntegranteProjeto;
-	
-	@Column(name = "integrante_inclusao", nullable = false)
-	private LOG inclusao;
-	
-	@Column(name = "integrante_alteracao", nullable = true)
-	private LOG alteracao;
+
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = false)
+	private Log inclusao;
+
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = true, insertable = false, updatable = false)
+	private Log alteracao;
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_id", nullable = false)
@@ -74,8 +75,8 @@ public class Integrante {
 	public Integrante(
 		Integer id,
 		PerfilIntegranteProjeto perfilIntegranteProjeto,
-		LOG inclusao,
-		LOG alteracao,
+		Log inclusao,
+		Log alteracao,
 		Usuario usuario,
 		Projeto projeto,
 		List<Requisito> requisitos,
@@ -109,19 +110,19 @@ public class Integrante {
 		this.perfilIntegranteProjeto = perfilIntegranteProjeto;
 	}
 
-	public LOG getInclusao() {
+	public Log getInclusao() {
 		return inclusao;
 	}
 
-	public void setInclusao(LOG inclusao) {
+	public void setInclusao(Log inclusao) {
 		this.inclusao = inclusao;
 	}
 
-	public LOG getAlteracao() {
+	public Log getAlteracao() {
 		return alteracao;
 	}
 
-	public void setAlteracao(LOG alteracao) {
+	public void setAlteracao(Log alteracao) {
 		this.alteracao = alteracao;
 	}
 

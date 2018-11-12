@@ -9,9 +9,11 @@ import javax.transaction.Transactional;
 
 import org.demoiselle.jee.crud.AbstractBusiness;
 
+import br.com.backend.requisitos.dao.LogDAO;
 import br.com.backend.requisitos.dao.UsuarioDAO;
 import br.com.backend.requisitos.dto.interfaces.UsuarioDTOInterface;
 import br.com.backend.requisitos.dto.model.UsuarioDTOModel;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Usuario;
 import br.com.backend.requisitos.utils.Util;
 
@@ -19,6 +21,9 @@ public class UsuarioBC extends AbstractBusiness<Usuario, Integer> {
 	
 	@Inject
 	protected UsuarioDAO usuarioDAO;
+	
+	@Inject
+	protected LogDAO logDAO;
 
 	public UsuarioBC() {
 	}
@@ -30,14 +35,21 @@ public class UsuarioBC extends AbstractBusiness<Usuario, Integer> {
 			if (usuario != null) {
 				throw new Exception("Email já cadastrado");
 			}
+			
 			Util.validarUsuario(u);
 			usuario = new Usuario();
 			usuario.setNome(u.getNome());
 			usuario.setEmail(u.getEmail());
 			usuario.setSenha(u.getSenha());
-			usuario.setDataInclusao(Util.currentDate());
 
 			usuarioDAO.create(usuario);
+			Usuario usua = usuarioDAO.findByEmail(u.getEmail());
+			if (usua != null) {
+				Log log = logDAO.persist(Util.logger(usua.getId(), "INCLUSÃO"));
+				usua.setInclusao(log);
+				
+				usuarioDAO.mergeHalf(usua.getId(), usua);
+			}
 		} catch (Exception e) {
 			throw e;
 		}
@@ -54,7 +66,9 @@ public class UsuarioBC extends AbstractBusiness<Usuario, Integer> {
 
 			usuario.setNome(u.getNome());
 			usuario.setEmail(u.getEmail());
-			usuario.setDataAlteracao(Util.currentDate());
+			
+			Log log = logDAO.persist(Util.logger(usuario.getId(), "ALTERAÇÃO"));
+			usuario.setAlteracao(log);
 
 			usuarioDAO.mergeHalf(usuario.getId(), usuario);
 		} catch (Exception e) {
@@ -90,7 +104,7 @@ public class UsuarioBC extends AbstractBusiness<Usuario, Integer> {
 			usuario.setToken(token);
 
 			Security.setProperty(token, usuario.getId().toString());
-			usuarioDAO.mergeHalf(usuario.getId(), usuario);
+			usuarioDAO.mergeFull(usuario);
 			return new UsuarioDTOModel(usuario.getId(), usuario.getNome(), usuario.getEmail(), token);
 		} catch (Exception e) {
 			throw e;

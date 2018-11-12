@@ -10,12 +10,14 @@ import org.demoiselle.jee.crud.AbstractBusiness;
 
 import br.com.backend.requisitos.dao.CasoDeUsoDAO;
 import br.com.backend.requisitos.dao.IntegranteDAO;
+import br.com.backend.requisitos.dao.LogDAO;
 import br.com.backend.requisitos.dao.ProjetoDAO;
 import br.com.backend.requisitos.dto.interfaces.CasoDeUsoDTOInterface;
 import br.com.backend.requisitos.dto.model.CasoDeUsoDTODetalhadoModel;
 import br.com.backend.requisitos.dto.model.CasoDeUsoDTOModel;
 import br.com.backend.requisitos.entity.CasoDeUso;
 import br.com.backend.requisitos.entity.Integrante;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Projeto;
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
 import br.com.backend.requisitos.enums.Status;
@@ -31,6 +33,9 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 
 	@Inject
 	private IntegranteDAO integranteDAO;
+	
+	@Inject
+	private LogDAO logDAO;
 
 	public CasoDeUsoBC() {
 	}
@@ -48,7 +53,8 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 
 			CasoDeUso casoDeUso = new CasoDeUso();
 			
-			casoDeUso.setInclusao(Util.logger(integrante.getId()));
+			Log log = logDAO.persist(Util.logger(idUsuario, "INCLUSÃO"));
+			casoDeUso.setInclusao(log);
 			casoDeUso.setNome(c.getNome());
 			casoDeUso.setEscopo(c.getEscopo());
 			casoDeUso.setNivel(c.getNivel());
@@ -154,6 +160,8 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			)
 				throw new Exception("Integrante não tem permissão para alterar caso de uso");
 
+			Log log = logDAO.persist(Util.logger(idUsuario, "ALTERAÇÃO"));
+			casoDeUso.setAlteracao(log);
 			casoDeUso.setNome(c.getNome());
 			casoDeUso.setEscopo(c.getEscopo());
 			casoDeUso.setNivel(c.getNivel());
@@ -162,7 +170,6 @@ public class CasoDeUsoBC extends AbstractBusiness<CasoDeUso, Integer> {
 			casoDeUso.setCenarioPrincipal(c.getCenarioPrincipal());
 			casoDeUso.setExtensao(c.getExtensao());
 			casoDeUso.setAtorPrincipal(c.getAtorPrincipal());
-			casoDeUso.setAlteracao(Util.logger(integrante.getId()));
 			casoDeUso.setStatus(Status.valueString(c.getStatus()));
 
 			casoDeUsoDAO.mergeFull(casoDeUso);

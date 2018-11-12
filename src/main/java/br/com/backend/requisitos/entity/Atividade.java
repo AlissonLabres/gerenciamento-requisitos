@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 
 import br.com.backend.requisitos.enums.Status;
-import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -57,12 +56,14 @@ public class Atividade {
 	
 	@Column(name = "atividade_data_fim", nullable = false)
 	private Calendar dataFim;
-	
-	@Column(name = "atividade_inclusao", nullable = false)
-	private LOG inclusao;
-	
-	@Column(name = "atividade_alteracao", nullable = true)
-	private LOG alteracao;
+
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = false)
+	private Log inclusao;
+
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = true, insertable = false, updatable = false)
+	private Log alteracao;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "requisito_id", nullable = false)
@@ -84,8 +85,8 @@ public class Atividade {
 		Calendar dataInicio,
 		Calendar dataFim,
 		Calendar dataConclusao,
-		LOG inclusao,
-		LOG alteracao,
+		Log inclusao,
+		Log alteracao,
 		Requisito requisito,
 		List<Integrante> desenvolvedores
 	) {
@@ -158,19 +159,19 @@ public class Atividade {
 		this.dataConclusao = dataConclusao;
 	}
 
-	public LOG getInclusao() {
+	public Log getInclusao() {
 		return inclusao;
 	}
 
-	public void setInclusao(LOG inclusao) {
+	public void setInclusao(Log inclusao) {
 		this.inclusao = inclusao;
 	}
 
-	public LOG getAlteracao() {
+	public Log getAlteracao() {
 		return alteracao;
 	}
 
-	public void setAlteracao(LOG alteracao) {
+	public void setAlteracao(Log alteracao) {
 		this.alteracao = alteracao;
 	}
 

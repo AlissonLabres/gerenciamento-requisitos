@@ -17,7 +17,6 @@ import javax.persistence.OneToMany;
 import br.com.backend.requisitos.enums.CategoriaRequisito;
 import br.com.backend.requisitos.enums.ImportanciaRequisito;
 import br.com.backend.requisitos.enums.Status;
-import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -32,11 +31,13 @@ public class Requisito {
 	@Column(name = "requisito_idRequisito", nullable = false)
 	private Double idRequisito;
 
-	@Column(name = "requisito_inclusao", nullable = false)
-	private LOG inclusao;
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = false)
+	private Log inclusao;
 
-	@Column(name = "requisito_alteracao", nullable = true)
-	private LOG alteracao;
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = true, insertable = false, updatable = false)
+	private Log alteracao;
 
 	@Column(name = "requisito_nome", nullable = false)
 	private String nome;
@@ -84,8 +85,8 @@ public class Requisito {
 		ImportanciaRequisito importancia,
 		String fonte,
 		CategoriaRequisito categoria,
-		LOG inclusao,
-		LOG alteracao,
+		Log inclusao,
+		Log alteracao,
 		Projeto projeto,
 		Integrante integrante,
 		List<Atividade> atividades,
@@ -163,19 +164,19 @@ public class Requisito {
 		this.categoria = categoria;
 	}
 
-	public LOG getInclusao() {
+	public Log getInclusao() {
 		return inclusao;
 	}
 
-	public void setInclusao(LOG inclusao) {
+	public void setInclusao(Log inclusao) {
 		this.inclusao = inclusao;
 	}
 
-	public LOG getAlteracao() {
+	public Log getAlteracao() {
 		return alteracao;
 	}
 
-	public void setAlteracao(LOG alteracao) {
+	public void setAlteracao(Log alteracao) {
 		this.alteracao = alteracao;
 	}
 

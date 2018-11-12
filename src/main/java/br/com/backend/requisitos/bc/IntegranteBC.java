@@ -9,12 +9,14 @@ import javax.transaction.Transactional;
 import org.demoiselle.jee.crud.AbstractBusiness;
 
 import br.com.backend.requisitos.dao.IntegranteDAO;
+import br.com.backend.requisitos.dao.LogDAO;
 import br.com.backend.requisitos.dao.ProjetoDAO;
 import br.com.backend.requisitos.dao.UsuarioDAO;
 import br.com.backend.requisitos.dto.interfaces.IntegranteDTOInterface;
 import br.com.backend.requisitos.dto.model.IntegranteDTODetalhadoModel;
 import br.com.backend.requisitos.dto.model.IntegranteDTOModel;
 import br.com.backend.requisitos.entity.Integrante;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Projeto;
 import br.com.backend.requisitos.entity.Usuario;
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
@@ -30,6 +32,9 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 	
 	@Inject
 	private ProjetoDAO projetoDAO;
+	
+	@Inject
+	private LogDAO logDAO;
 
 	public IntegranteBC() {
 	}
@@ -53,7 +58,9 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 			}
 
 			Integrante integrante = new Integrante();
-			integrante.setInclusao(Util.logger(integrante.getId()));
+			
+			Log log = logDAO.persist(Util.logger(usuario.getId(), "INCLUSÃO"));
+			integrante.setInclusao(log);
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.valueString(i.getPerfilIntegrante()));
 			integrante.setUsuario(usuario);
 			integrante.setProjeto(projeto);
@@ -136,8 +143,6 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 			if (integrante == null)
 				throw new Exception("Integrante não encontrado no projeto");
 			
-			System.out.println(projeto.getId());
-			System.out.println(integrante.getProjeto().getId());
 			if(!integrante.getProjeto().getId().equals(projeto.getId())) 
 				throw new Exception("Integrante não encontrado no projeto");
 
@@ -145,7 +150,9 @@ public class IntegranteBC extends AbstractBusiness<Integrante, Integer> {
 				throw new Exception("Não é possivel alterar o perfil do Gerente");
 			
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.valueString(i.getPerfilIntegrante()));
-			integrante.setAlteracao(Util.logger(integrante.getId()));
+			
+			Log log = logDAO.persist(Util.logger(idUsuario, "ALTERAÇÃO"));
+			integrante.setAlteracao(log);
 
 			integranteDAO.mergeFull(integrante);
 		} catch (Exception e) {

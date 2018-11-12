@@ -14,6 +14,7 @@
         <class>br.com.backend.requisitos.entity.Requisito</class>
         <class>br.com.backend.requisitos.entity.Usuario</class>
         <class>br.com.backend.requisitos.entity.Artefato</class>
+        <class>br.com.backend.requisitos.entity.Log</class>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         
 		<properties>

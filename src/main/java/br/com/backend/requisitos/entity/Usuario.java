@@ -1,13 +1,17 @@
 package br.com.backend.requisitos.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @NamedQueries({
@@ -18,25 +22,33 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "usuario_id", nullable = false)
 	private Integer id;
+
 	@Column(name = "usuario_nome", nullable = false)
 	private String nome;
+
 	@Column(name = "usuario_email", nullable = false, unique = true)
 	private String email;
+
 	@Column(name = "usuario_senha", nullable = false)
 	private String senha;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "usuario_dataInclusao", nullable = false)
-	private Calendar dataInclusao;
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	@Column(name = "usuario_dataAlteracao", nullable = true)
-	private Calendar dataAlteracao;
+
 	@Column(name = "usuario_token", nullable = true)
 	private String token;
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	@Column(name = "usuario_dataUltimoToken", nullable = true)
 	private Calendar dataUltimoToken;
+
 	@Column(name = "usuario_codigo_alteracao_senha", nullable = true)
 	private String codigoAlteracaoSenha;
+	
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = false)
+	private Log inclusao;
+
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = true, insertable = false, updatable = false)
+	private Log alteracao;
 
 	public Usuario() {
 	}
@@ -73,22 +85,6 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public Calendar getDataInclusao() {
-		return dataInclusao;
-	}
-
-	public void setDataInclusao(Calendar dataInclusao) {
-		this.dataInclusao = dataInclusao;
-	}
-
-	public Calendar getDataAlteracao() {
-		return dataAlteracao;
-	}
-
-	public void setDataAlteracao(Calendar dataAlteracao) {
-		this.dataAlteracao = dataAlteracao;
-	}
-
 	public String getToken() {
 		return token;
 	}
@@ -113,16 +109,32 @@ public class Usuario {
 		this.codigoAlteracaoSenha = codigoAlteracaoSenha;
 	}
 
+	public Log getInclusao() {
+		return inclusao;
+	}
+
+	public void setInclusao(Log inclusao) {
+		this.inclusao = inclusao;
+	}
+
+	public Log getAlteracao() {
+		return alteracao;
+	}
+
+	public void setAlteracao(Log alteracao) {
+		this.alteracao = alteracao;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((alteracao == null) ? 0 : alteracao.hashCode());
 		result = prime * result + ((codigoAlteracaoSenha == null) ? 0 : codigoAlteracaoSenha.hashCode());
-		result = prime * result + ((dataAlteracao == null) ? 0 : dataAlteracao.hashCode());
-		result = prime * result + ((dataInclusao == null) ? 0 : dataInclusao.hashCode());
 		result = prime * result + ((dataUltimoToken == null) ? 0 : dataUltimoToken.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((inclusao == null) ? 0 : inclusao.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		result = prime * result + ((token == null) ? 0 : token.hashCode());
@@ -138,20 +150,15 @@ public class Usuario {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
+		if (alteracao == null) {
+			if (other.alteracao != null)
+				return false;
+		} else if (!alteracao.equals(other.alteracao))
+			return false;
 		if (codigoAlteracaoSenha == null) {
 			if (other.codigoAlteracaoSenha != null)
 				return false;
 		} else if (!codigoAlteracaoSenha.equals(other.codigoAlteracaoSenha))
-			return false;
-		if (dataAlteracao == null) {
-			if (other.dataAlteracao != null)
-				return false;
-		} else if (!dataAlteracao.equals(other.dataAlteracao))
-			return false;
-		if (dataInclusao == null) {
-			if (other.dataInclusao != null)
-				return false;
-		} else if (!dataInclusao.equals(other.dataInclusao))
 			return false;
 		if (dataUltimoToken == null) {
 			if (other.dataUltimoToken != null)
@@ -167,6 +174,11 @@ public class Usuario {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (inclusao == null) {
+			if (other.inclusao != null)
+				return false;
+		} else if (!inclusao.equals(other.inclusao))
 			return false;
 		if (nome == null) {
 			if (other.nome != null)

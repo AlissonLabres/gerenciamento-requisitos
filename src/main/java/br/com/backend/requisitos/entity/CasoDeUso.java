@@ -14,9 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import br.com.backend.requisitos.enums.Status;
-import br.com.backend.requisitos.utils.LOG;
 
 @Entity
 @NamedQueries({
@@ -63,11 +63,13 @@ public class CasoDeUso {
 	@Column(name = "caso_de_uso_extensao", nullable = false)
 	private String extensao;
 
-	@Column(name = "caso_de_uso_inclusao", nullable = false)
-	private LOG inclusao;
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = false)
+	private Log inclusao;
 
-	@Column(name = "caso_de_uso_alteracao", nullable = true)
-	private LOG alteracao;
+	@OneToOne
+	@JoinColumn(name = "log_id", nullable = true, insertable = false, updatable = false)
+	private Log alteracao;
 
 	@ManyToOne
 	@JoinColumn(name = "projeto_id", nullable = false)
@@ -95,8 +97,8 @@ public class CasoDeUso {
 		String nivel,
 		String atorPrincipal,
 		String preCondicao,
-		LOG inclusao,
-		LOG alteracao,
+		Log inclusao,
+		Log alteracao,
 		Projeto projeto,
 		Status status,
 		List<Artefato> artefatos
@@ -186,19 +188,19 @@ public class CasoDeUso {
 		this.extensao = extensao;
 	}
 
-	public LOG getInclusao() {
+	public Log getInclusao() {
 		return inclusao;
 	}
 
-	public void setInclusao(LOG inclusao) {
+	public void setInclusao(Log inclusao) {
 		this.inclusao = inclusao;
 	}
 
-	public LOG getAlteracao() {
+	public Log getAlteracao() {
 		return alteracao;
 	}
 
-	public void setAlteracao(LOG alteracao) {
+	public void setAlteracao(Log alteracao) {
 		this.alteracao = alteracao;
 	}
 

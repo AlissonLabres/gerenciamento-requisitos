@@ -10,12 +10,14 @@ import org.demoiselle.jee.crud.AbstractBusiness;
 
 import br.com.backend.requisitos.dao.AtividadeDAO;
 import br.com.backend.requisitos.dao.IntegranteDAO;
+import br.com.backend.requisitos.dao.LogDAO;
 import br.com.backend.requisitos.dao.RequisitoDAO;
 import br.com.backend.requisitos.dto.interfaces.AtividadeDTOInterface;
 import br.com.backend.requisitos.dto.model.AtividadeDTODetalhadoModel;
 import br.com.backend.requisitos.dto.model.AtividadeDTOModel;
 import br.com.backend.requisitos.entity.Atividade;
 import br.com.backend.requisitos.entity.Integrante;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Requisito;
 import br.com.backend.requisitos.enums.Status;
 import br.com.backend.requisitos.utils.Util;
@@ -30,6 +32,9 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 
 	@Inject
 	private IntegranteDAO integranteDAO;
+
+	@Inject
+	private LogDAO logDAO;
 
 	public AtividadeBC() {
 	}
@@ -51,7 +56,11 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			atividade.setStatus(Status.valueString(a.getStatus()));
 
 			Integrante criador = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
-			atividade.setInclusao(Util.logger(criador.getId()));
+			if(criador == null)
+				throw new Exception("Usuário não encontrado");
+			
+			Log log = logDAO.persist(Util.logger(criador.getId(), "INCLUSÃO"));
+			atividade.setInclusao(log);
 
 			Integrante desenvolvedor = (Integrante) integranteDAO.find(a.getIdDesenvolvedor());
 			List<Integrante> desenvolvedores = new ArrayList<Integrante>();
@@ -139,6 +148,10 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			Atividade atividade = atividadeDAO.find(idAtividade);
 			if(atividade == null)
 				throw new Exception("Atividade não encontrada");
+			
+			Integrante criador = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
+			if(criador == null)
+				throw new Exception("Usuário não encontrado");
 
 			if(!atividade.getRequisito().getId().equals(idRequisito))
 				throw new Exception("Atividade não encontrada no requisito");
@@ -149,7 +162,9 @@ public class AtividadeBC extends AbstractBusiness<Atividade, Integer> {
 			atividade.setDataFim(a.getDataFim());
 			atividade.setDataConclusao(a.getDataConclusao());	
 			atividade.setStatus(Status.valueString(a.getStatus()));
-			atividade.setAlteracao(Util.logger(idUsuario));
+			
+			Log log = logDAO.persist(Util.logger(idUsuario, "ALTERAÇÃO"));
+			atividade.setAlteracao(log);
 
 			atividadeDAO.mergeFull(atividade);
 		} catch (Exception e) {

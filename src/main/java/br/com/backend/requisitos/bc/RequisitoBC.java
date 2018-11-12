@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.demoiselle.jee.crud.AbstractBusiness;
 
 import br.com.backend.requisitos.dao.IntegranteDAO;
+import br.com.backend.requisitos.dao.LogDAO;
 import br.com.backend.requisitos.dao.ProjetoDAO;
 import br.com.backend.requisitos.dao.RequisitoDAO;
 import br.com.backend.requisitos.dto.interfaces.RequisitoDTOInteface;
@@ -16,6 +17,7 @@ import br.com.backend.requisitos.dto.model.RequisitoDTODetalhadoModel;
 import br.com.backend.requisitos.dto.model.RequisitoDTOModel;
 import br.com.backend.requisitos.entity.Atividade;
 import br.com.backend.requisitos.entity.Integrante;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Projeto;
 import br.com.backend.requisitos.entity.Requisito;
 import br.com.backend.requisitos.enums.CategoriaRequisito;
@@ -34,6 +36,9 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 
 	@Inject
 	private IntegranteDAO integranteDAO;
+	
+	@Inject
+	private LogDAO logDAO;
 
 	public RequisitoBC() {
 	}
@@ -50,7 +55,9 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 				throw new Exception("Usuario não encontrado");
 
 			Requisito requisito = new Requisito();
-			requisito.setInclusao(Util.logger(integrante.getId()));
+			
+			Log log = logDAO.persist(Util.logger(integrante.getId(), "INCLUSÃO"));
+			requisito.setInclusao(log);
 			requisito.setIdRequisito(r.getIdRequisito());
 			requisito.setNome(r.getNome());
 			requisito.setDescricao(r.getDescricao());
@@ -163,13 +170,14 @@ public class RequisitoBC extends AbstractBusiness<Requisito, Integer> {
 			)
 				throw new Exception("Integrante não tem permissão para alterar requisito");
 
+			Log log = logDAO.persist(Util.logger(integrante.getId(), "ALTERAÇÃO"));
+			requisito.setAlteracao(log);
 			requisito.setIdRequisito(r.getIdRequisito());
 			requisito.setNome(r.getNome());
 			requisito.setDescricao(r.getDescricao());
 			requisito.setImportancia(ImportanciaRequisito.valueString(r.getImportancia()));
 			requisito.setFonte(r.getFonte());
 			requisito.setCategoria(CategoriaRequisito.valueString(r.getCategoria()));
-			requisito.setAlteracao(Util.logger(integrante.getId()));
 			requisito.setStatus(Status.valueString(r.getStatus()));
 
 			requisitoDAO.mergeFull(requisito);

@@ -9,12 +9,14 @@ import javax.transaction.Transactional;
 import org.demoiselle.jee.crud.AbstractBusiness;
 
 import br.com.backend.requisitos.dao.IntegranteDAO;
+import br.com.backend.requisitos.dao.LogDAO;
 import br.com.backend.requisitos.dao.ProjetoDAO;
 import br.com.backend.requisitos.dao.UsuarioDAO;
 import br.com.backend.requisitos.dto.interfaces.ProjetoDTOInterface;
 import br.com.backend.requisitos.dto.model.ProjetoDTODetalhadoModel;
 import br.com.backend.requisitos.dto.model.ProjetoDTOModel;
 import br.com.backend.requisitos.entity.Integrante;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Projeto;
 import br.com.backend.requisitos.entity.Usuario;
 import br.com.backend.requisitos.enums.PerfilIntegranteProjeto;
@@ -32,6 +34,9 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 	@Inject
 	private UsuarioDAO usuarioDAO;
 
+	@Inject
+	private LogDAO logDAO;
+
 	public ProjetoBC() {
 	}
 
@@ -48,12 +53,16 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			projeto.setNome(p.getNome());
 			projeto.setDataInicio(p.getDataInicio());
 			projeto.setDataFim(p.getDataFim());
-			projeto.setInclusao(Util.logger(usuario.getId()));
+			
+			Log logPersistido = logDAO.persist(Util.logger(usuario.getId(), "INCLUSÃO"));
+			projeto.setInclusao(logPersistido);
 			projeto.setStatus(Status.valueString(p.getStatus()));
 
 			integrante.setUsuario(usuario);
 			integrante.setPerfilIntegranteProjeto(PerfilIntegranteProjeto.GERENTE);
-			integrante.setInclusao(Util.logger(usuario.getId()));
+			
+			Log logPersistidoIntegrante = logDAO.persist(Util.logger(usuario.getId(), "INCLUSÃO"));
+			integrante.setInclusao(logPersistidoIntegrante);
 			integrante.setProjeto(projeto);
 
 			List<Integrante> integrantes = new ArrayList<Integrante>();
@@ -139,7 +148,9 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			projeto.setNome(p.getNome());
 			projeto.setDataInicio(p.getDataInicio());
 			projeto.setDataFim(p.getDataFim());
-			projeto.setAlteracao(Util.logger(usuario.getId()));
+			
+			Log logPersistido = logDAO.persist(Util.logger(usuario.getId(), "ALTERAÇÃO"));
+			projeto.setAlteracao(logPersistido);
 			projeto.setStatus(Status.valueString(p.getStatus()));
 
 			projetoDAO.mergeFull(projeto);

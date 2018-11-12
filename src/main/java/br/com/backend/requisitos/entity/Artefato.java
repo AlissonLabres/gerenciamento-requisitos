@@ -12,8 +12,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
-import br.com.backend.requisitos.utils.LOG;
-
 @NamedQueries({
 	@NamedQuery(
 		name = "Artefato.findAll",
@@ -56,9 +54,10 @@ public class Artefato {
 	
 	@Column(name = "artefato_descricao", nullable = false)
 	private String descricao;
-	
-	@Column(name = "artefato_inclusao", nullable = false)
-	private LOG inclusao;
+
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = false)
+	private Log inclusao;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "projeto_id", nullable = false)
@@ -71,9 +70,10 @@ public class Artefato {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "caso_de_uso_id", nullable = true)
 	private CasoDeUso casoDeUso;
-	
-	@Column(name = "artefato_alteracao", nullable = true)
-	private LOG alteracao;
+
+	@ManyToOne
+	@JoinColumn(name = "log_id", nullable = true, insertable = false, updatable = false)
+	private Log alteracao;
 	
 	@OneToOne(orphanRemoval = true)
     @JoinColumn(name = "arquivo_id", nullable = true)
@@ -86,10 +86,10 @@ public class Artefato {
 		Integer id,
 		String nome,
 		String descricao,
-		LOG inclusao,
+		Log inclusao,
 		Requisito requisito,
 		CasoDeUso casoDeUso,
-		LOG alteracao,
+		Log alteracao,
 		Arquivo arquivo
 	) {
 		this.id = id;
@@ -131,11 +131,11 @@ public class Artefato {
 		this.descricao = descricao;
 	}
 
-	public LOG getInclusao() {
+	public Log getInclusao() {
 		return inclusao;
 	}
 
-	public void setInclusao(LOG inclusao) {
+	public void setInclusao(Log inclusao) {
 		this.inclusao = inclusao;
 	}
 
@@ -166,11 +166,11 @@ public class Artefato {
 		this.casoDeUso = casoDeUso;
 	}
 
-	public LOG getAlteracao() {
+	public Log getAlteracao() {
 		return alteracao;
 	}
 
-	public void setAlteracao(LOG alteracao) {
+	public void setAlteracao(Log alteracao) {
 		this.alteracao = alteracao;
 	}
 

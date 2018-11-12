@@ -1,12 +1,8 @@
 package br.com.backend.requisitos.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import br.com.backend.requisitos.enums.Status;
-import br.com.backend.requisitos.utils.LOG;
-
 import java.util.Calendar;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -14,8 +10,14 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import br.com.backend.requisitos.enums.Status;
 
 @Entity
 @NamedQueries({
@@ -39,11 +41,13 @@ public class Projeto {
 	@Column(name = "projeto_data_fim", nullable = false)
 	private Calendar dataFim;
 
-	@Column(name = "projeto_inclusao", nullable = false)
-	private LOG inclusao;
+	@OneToOne
+	@JoinColumn(name = "log_id", nullable = false)
+	private Log inclusao;
 
-	@Column(name = "projeto_alteracao", nullable = true)
-	private LOG alteracao;
+	@OneToOne
+	@JoinColumn(name = "log_id", nullable = true, insertable = false, updatable = false)
+	private Log alteracao;
 
 	@OneToMany(mappedBy = "projeto", fetch = FetchType.EAGER)
 	@Column(name = "requisitos", nullable = true)
@@ -87,8 +91,8 @@ public class Projeto {
 		String nome,
 		Calendar dataInicio,
 		Calendar dataFim,
-		LOG inclusao,
-		LOG alteracao,
+		Log inclusao,
+		Log alteracao,
 		List<Requisito> requisitos,
 		List<CasoDeUso> casosDeUso,
 		List<Integrante> integrantes,
@@ -140,19 +144,19 @@ public class Projeto {
 		this.dataFim = dataFim;
 	}
 
-	public LOG getInclusao() {
+	public Log getInclusao() {
 		return inclusao;
 	}
 
-	public void setInclusao(LOG inclusao) {
+	public void setInclusao(Log inclusao) {
 		this.inclusao = inclusao;
 	}
 
-	public LOG getAlteracao() {
+	public Log getAlteracao() {
 		return alteracao;
 	}
 
-	public void setAlteracao(LOG alteracao) {
+	public void setAlteracao(Log alteracao) {
 		this.alteracao = alteracao;
 	}
 

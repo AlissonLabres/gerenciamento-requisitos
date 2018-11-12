@@ -18,10 +18,12 @@ import javax.mail.internet.MimeMessage;
 import javax.ws.rs.core.Response;
 
 import br.com.backend.requisitos.dto.interfaces.UsuarioDTOInterface;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Usuario;
 import io.swagger.util.Json;
 
 public class Util {
+	
 	public Util() {
 	}
 
@@ -29,8 +31,8 @@ public class Util {
 		return Calendar.getInstance();
 	}
 	
-	public static LOG logger(Integer idIntegrante) {
-		return new LOG(idIntegrante, Util.currentDate());
+	public static Log logger(Integer idIntegrante, String evento) {
+		return new Log(null, idIntegrante, Util.currentDate(), evento);
 	}
 
 	public static void validarUsuario(UsuarioDTOInterface u) throws Exception {

@@ -11,6 +11,7 @@ import org.demoiselle.jee.crud.AbstractBusiness;
 import br.com.backend.requisitos.dao.ArtefatoDAO;
 import br.com.backend.requisitos.dao.CasoDeUsoDAO;
 import br.com.backend.requisitos.dao.IntegranteDAO;
+import br.com.backend.requisitos.dao.LogDAO;
 import br.com.backend.requisitos.dao.ProjetoDAO;
 import br.com.backend.requisitos.dao.RequisitoDAO;
 import br.com.backend.requisitos.dto.interfaces.ArtefatoDTOInterface;
@@ -18,6 +19,7 @@ import br.com.backend.requisitos.dto.model.ArtefatoDTOModel;
 import br.com.backend.requisitos.entity.Artefato;
 import br.com.backend.requisitos.entity.CasoDeUso;
 import br.com.backend.requisitos.entity.Integrante;
+import br.com.backend.requisitos.entity.Log;
 import br.com.backend.requisitos.entity.Projeto;
 import br.com.backend.requisitos.entity.Requisito;
 import br.com.backend.requisitos.utils.Util;
@@ -39,6 +41,9 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 	@Inject
 	private ProjetoDAO projetoDAO;
 
+	@Inject
+	private LogDAO logDAO;
+
 	@Transactional
 	public void create(
 		Integer idUsuario,
@@ -55,7 +60,9 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 				throw new Exception("Usuário não encontrado");
 	
 			Artefato artefato = new Artefato();
-			artefato.setInclusao(Util.logger(criador.getId()));
+			
+			Log log = logDAO.persist(Util.logger(criador.getId(), "INCLUSÃO"));
+			artefato.setInclusao(log);
 			artefato.setProjeto(projeto);
 			artefato.setDescricao(a.getDescricao());
 			artefato.setNome(a.getNome());
@@ -244,7 +251,8 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			if(artefato == null)
 				throw new Exception("Atividade não encontrada");
 
-			artefato.setAlteracao(Util.logger(criador.getId()));
+			Log log = logDAO.persist(Util.logger(criador.getId(), "ALTERAÇÃO"));
+			artefato.setAlteracao(log);
 			artefato.setProjeto(projeto);
 			artefato.setDescricao(a.getDescricao());
 			artefato.setNome(a.getNome());
