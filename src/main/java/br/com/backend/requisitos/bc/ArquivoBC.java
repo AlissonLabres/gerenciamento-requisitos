@@ -57,7 +57,7 @@ public class ArquivoBC extends AbstractBusiness<Arquivo, Integer>{
 			final Arquivo arquivoPersistido = arquivoDAO.persist(arquivo);
 
 			artefato.setArquivo(arquivoPersistido);
-			artefatoDAO.mergeHalf(idArtefato, artefato);
+			artefatoDAO.mergeFull(artefato);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -122,7 +122,7 @@ public class ArquivoBC extends AbstractBusiness<Arquivo, Integer>{
 			final Arquivo arquivoPersistido = arquivoDAO.mergeHalf(idArquivo, arquivo);
 
 			artefato.setArquivo(arquivoPersistido);
-			artefatoDAO.mergeHalf(idArtefato, artefato);
+			artefatoDAO.mergeFull(artefato);
 		} catch (Exception e) {
 			throw e;
 		}

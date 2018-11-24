@@ -124,7 +124,7 @@ public class UsuarioBC extends AbstractBusiness<Usuario, Integer> {
 			Util.enviarEmail(usuario.getEmail(), "Alteração de senha.",
 					"Segue codigo de verificação, para alterar sua senha<br><br>Codigo de verificação: " + codeEmail);
 
-			usuarioDAO.mergeHalf(usuario.getId(), usuario);
+			usuarioDAO.mergeFull(usuario);
 		} catch (Exception e) {
 			throw e;
 		}

@@ -96,7 +96,7 @@ public class Util {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("alisson.labres@gmail.com", "gimenes123");
+				return new PasswordAuthentication("gdr.pbl@gmail.com", "Gdr@1234");
 			}
 		});
 
@@ -114,7 +114,7 @@ public class Util {
 			Transport.send(message);
 			return "Email enviado com sucesso";
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("Erro inesperado");
 		}
 	}
 

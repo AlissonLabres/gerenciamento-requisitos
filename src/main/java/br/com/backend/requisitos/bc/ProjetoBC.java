@@ -148,6 +148,7 @@ public class ProjetoBC extends AbstractBusiness<Projeto, Integer> {
 			projeto.setNome(p.getNome());
 			projeto.setDataInicio(p.getDataInicio());
 			projeto.setDataFim(p.getDataFim());
+			projeto.setStatus(Status.valueString(p.getStatus()));
 			
 			Log logPersistido = logDAO.persist(Util.logger(usuario.getId(), "ALTERAÇÃO"));
 			projeto.setAlteracao(logPersistido);

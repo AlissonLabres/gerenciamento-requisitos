@@ -45,7 +45,7 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 	private LogDAO logDAO;
 
 	@Transactional
-	public void create(
+	public Integer create(
 		Integer idUsuario,
 		Integer idProjeto,
 		ArtefatoDTOInterface a
@@ -87,7 +87,8 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 				artefato.setCasoDeUso(casoDeUso);
 			}
 
-			artefatoDAO.create(artefato);
+			Artefato artefatoPersistido = artefatoDAO.persist(artefato);
+			return artefatoPersistido.getId();
 		} catch (Exception e) {
 			throw e;
 		}

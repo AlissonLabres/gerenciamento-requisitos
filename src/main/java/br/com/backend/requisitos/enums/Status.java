@@ -6,7 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public enum Status
 {
   CRIANDO(Integer.valueOf(0), "Criando"), 
-  IMPLEMENTANDO(Integer.valueOf(1), "Implementado"), 
+  IMPLEMENTANDO(Integer.valueOf(1), "Implementando"), 
   TESTANDO(Integer.valueOf(2), "Testando"), 
   REJEITADO(Integer.valueOf(3), "Rejeitado"), 
   CONCLUIDO(Integer.valueOf(4), "Concluido"),

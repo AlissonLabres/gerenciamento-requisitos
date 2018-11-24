@@ -34,8 +34,7 @@ public class ArtefatoREST extends AbstractREST<Artefato, Integer>{
 		ArtefatoDTOInterface a
 	) {
 		try {
-			((ArtefatoBC) bc).create(idUsuario, idProjeto, a);
-			return Response.ok().build();
+			return Response.ok(((ArtefatoBC) bc).create(idUsuario, idProjeto, a)).build();
 		} catch (Exception e) {
 			return Util.handlerError(e, LOG);
 		}
