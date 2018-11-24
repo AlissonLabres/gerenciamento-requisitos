@@ -43,6 +43,7 @@ public class Arquivo {
 	private byte[] arquivo;
 	
 	@OneToOne
+	@Column(name = "arquivo_artefato", nullable = false)
 	private Artefato idArtefato;
 	
 	public Arquivo() {
