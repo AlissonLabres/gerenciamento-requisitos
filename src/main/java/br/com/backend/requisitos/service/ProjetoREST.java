@@ -88,4 +88,40 @@ public class ProjetoREST extends AbstractREST<Projeto, Integer> {
 			return Util.handlerError(e, LOG);
 		}
 	}
+	
+	//Jhony
+	@GET
+	@Path("/listIntegrantes/{idProjeto}")
+	@Auth
+	public Response listIntegrantes(@PathParam("idProjeto") Integer idProjeto) {
+		try {
+			return Response.ok(((ProjetoBC) bc).listarIntegrantes(idProjeto)).build();
+		} catch (Exception e) {
+			return Util.handlerError(e, LOG);
+		}
+	}
+	
+	//Jhony
+	@GET
+	@Path("/listCasosDeUso/{idProjeto}")
+	@Auth
+	public Response listCasosDeUso(@PathParam("idProjeto") Integer idProjeto) {
+		try {
+			return Response.ok(((ProjetoBC) bc).listarCasosDeUso(idProjeto)).build();
+		} catch (Exception e) {
+			return Util.handlerError(e, LOG);
+		}
+	}
+	
+	//Jhony
+	@GET
+	@Path("/listRequisitos/{idProjeto}")
+	@Auth
+	public Response listCasoDeUso(@PathParam("idProjeto") Integer idProjeto) {
+		try {
+			return Response.ok(((ProjetoBC) bc).listarRequisitos(idProjeto)).build();
+		} catch (Exception e) {
+			return Util.handlerError(e, LOG);
+		}
+	}
 }

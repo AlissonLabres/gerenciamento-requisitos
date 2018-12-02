@@ -7,7 +7,10 @@ import javax.persistence.PersistenceContext;
 
 import org.demoiselle.jee.crud.AbstractDAO;
 
+import br.com.backend.requisitos.entity.CasoDeUso;
+import br.com.backend.requisitos.entity.Integrante;
 import br.com.backend.requisitos.entity.Projeto;
+import br.com.backend.requisitos.entity.Requisito;
 
 public class ProjetoDAO extends AbstractDAO<Projeto, Integer> {
 	@PersistenceContext
@@ -47,6 +50,42 @@ public class ProjetoDAO extends AbstractDAO<Projeto, Integer> {
 			return projeto.size() > 0 ? (Projeto) projeto.get(0) : null;
 		} catch (Exception error) {
 			throw error;
+		}
+	}
+	
+	//Jhony
+	public List<Integrante> listarIntegrantes(Integer idProjeto) {
+		try {
+			return
+
+			getEntityManager().createNamedQuery("Projeto.findIntegrantes", Integrante.class)
+					.setParameter("idProjeto", idProjeto).getResultList();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	//Jhony
+	public List<CasoDeUso> listarCasosDeUso(Integer idProjeto) {
+		try {
+			return
+
+			getEntityManager().createNamedQuery("Projeto.findCasosDeUso", CasoDeUso.class)
+					.setParameter("idProjeto", idProjeto).getResultList();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	//Jhony
+	public List<Requisito> listarRequisitos(Integer idProjeto) {
+		try {
+			return
+
+			getEntityManager().createNamedQuery("Projeto.findRequisitos", Requisito.class)
+					.setParameter("idProjeto", idProjeto).getResultList();
+		} catch (Exception e) {
+			throw e;
 		}
 	}
 }

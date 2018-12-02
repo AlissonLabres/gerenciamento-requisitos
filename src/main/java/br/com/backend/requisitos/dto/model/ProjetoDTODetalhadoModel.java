@@ -203,9 +203,9 @@ public class ProjetoDTODetalhadoModel extends ProjetoDTOModel {
 				new ArtefatoDTOModel(
 					artefato.getNome(),
 					artefato.getDescricao(),
-					artefato.getRequisito() != null ? artefato.getRequisito().getId() : null,
-					artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId() : null,
-					artefato.getArquivo() != null ? artefato.getArquivo().getId() : null,
+					artefato.getRequisito() != null ? artefato.getRequisito().getId().toString() : null,
+					artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId().toString() : null,
+					artefato.getCaminhoDocumento(),
 					artefato.getId()
 				)
 			);

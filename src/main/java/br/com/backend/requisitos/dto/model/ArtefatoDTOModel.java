@@ -7,11 +7,18 @@ public class ArtefatoDTOModel extends ArtefatoDTOInterface {
 
 	private Integer id;
 	
-	private Integer idArquivo;
+	private String documentoBase64;
 
-	public ArtefatoDTOModel(String nome, String descricao, Integer idRequisito, Integer idCasoDeUso, Integer idArquivo, Integer id) {
-		super(nome, descricao, idRequisito, idCasoDeUso);
-		this.idArquivo = idArquivo;
+	public ArtefatoDTOModel(
+		String nome,
+		String descricao,
+		String idRequisito,
+		String idCasoDeUso,
+		String documentoBase64,
+		Integer id
+	) {
+		super(nome, descricao, idRequisito, idCasoDeUso, null, null);
+		this.documentoBase64 = documentoBase64;
 		this.id = id;
 	}
 
@@ -23,11 +30,11 @@ public class ArtefatoDTOModel extends ArtefatoDTOInterface {
 		this.id = id;
 	}
 
-	public Integer getIdArquivo() {
-		return idArquivo;
+	public String getDocumentoBase64() {
+		return documentoBase64;
 	}
 
-	public void setIdArquivo(Integer idArquivo) {
-		this.idArquivo = idArquivo;
+	public void setIdArquivo(String documentoBase64) {
+		this.documentoBase64 = documentoBase64;
 	}
 }

@@ -1,6 +1,13 @@
 package br.com.backend.requisitos.bc;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -45,7 +52,7 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 	private LogDAO logDAO;
 
 	@Transactional
-	public Integer create(
+	public void create(
 		Integer idUsuario,
 		Integer idProjeto,
 		ArtefatoDTOInterface a
@@ -58,10 +65,15 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			Integrante criador = integranteDAO.findByIdUsuarioAndIdProjeto(idUsuario, idProjeto);
 			if(criador == null)
 				throw new Exception("Usuário não encontrado");
+
+			String caminhoCompletoDocumento  = Util.URL_ARQUIVOS + a.getNome() + "." + buscarPrefixoDocumento(a.getTipoDocumento());
+			salvarDocumento(a.getDocumento(), caminhoCompletoDocumento);
 	
 			Artefato artefato = new Artefato();
-			
 			Log log = logDAO.persist(Util.logger(criador.getId(), "INCLUSÃO"));
+			
+			artefato.setTipoDocumento(a.getTipoDocumento().split(" ")[0]);
+			artefato.setCaminhoDocumento(caminhoCompletoDocumento);
 			artefato.setInclusao(log);
 			artefato.setProjeto(projeto);
 			artefato.setDescricao(a.getDescricao());
@@ -72,7 +84,7 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			}
 
 			if(a.getIdRequisito() != null) {
-				Requisito requisito = requisitoDAO.find(idProjeto, a.getIdRequisito());
+				Requisito requisito = requisitoDAO.find(idProjeto, new Integer(a.getIdRequisito().trim()));
 				if (requisito == null)
 					throw new Exception("Requisito não encontrado");
 
@@ -80,15 +92,14 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			}
 			
 			if(a.getIdCasoDeUso() != null) {
-				CasoDeUso casoDeUso = casoDeUsoDAO.findByIdProjetoAndICasoDeUso(idProjeto, a.getIdCasoDeUso());
+				CasoDeUso casoDeUso = casoDeUsoDAO.findByIdProjetoAndICasoDeUso(idProjeto, new Integer(a.getIdCasoDeUso().trim()));
 				if(casoDeUso == null)
 					throw new Exception("Caso de uso não encontrado");
 
 				artefato.setCasoDeUso(casoDeUso);
 			}
 
-			Artefato artefatoPersistido = artefatoDAO.persist(artefato);
-			return artefatoPersistido.getId();
+			artefatoDAO.create(artefato);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -109,18 +120,16 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 
 			List<ArtefatoDTOModel> artefatosModel = new ArrayList<>();
 			for (Artefato artefato : artefatoDAO.list(idProjeto)) {
-				if(artefato.getArquivo() != null) {
-					artefatosModel.add(
-						new ArtefatoDTOModel(
-							artefato.getNome(),
-							artefato.getDescricao(),
-							artefato.getRequisito() != null ? artefato.getRequisito().getId() : null,
-							artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId() : null,
-							artefato.getArquivo().getId() ,
-							artefato.getId()
-						)
-					);
-				}
+				artefatosModel.add(
+					new ArtefatoDTOModel(
+						artefato.getNome(),
+						artefato.getDescricao(),
+						artefato.getRequisito() != null ? artefato.getRequisito().getId().toString() : null,
+						artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId().toString() : null,
+						artefato.getCaminhoDocumento(),
+						artefato.getId()
+					)
+				);
 			}
 			
 			return artefatosModel;
@@ -144,18 +153,16 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 
 			List<ArtefatoDTOModel> artefatosModel = new ArrayList<>();
 			for (Artefato artefato : artefatoDAO.listRequisito(idProjeto)) {
-				if(artefato.getArquivo() != null) {
-					artefatosModel.add(
-						new ArtefatoDTOModel(
-							artefato.getNome(),
-							artefato.getDescricao(),
-							artefato.getRequisito() != null ? artefato.getRequisito().getId() : null,
-							artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId() : null,
-							artefato.getArquivo().getId() ,
-							artefato.getId()
-						)
-					);
-				}
+				artefatosModel.add(
+					new ArtefatoDTOModel(
+						artefato.getNome(),
+						artefato.getDescricao(),
+						artefato.getRequisito() != null ? artefato.getRequisito().getId().toString() : null,
+						artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId().toString() : null,
+						artefato.getCaminhoDocumento(),
+						artefato.getId()
+					)
+				);
 			}
 			
 			return artefatosModel;
@@ -179,18 +186,16 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 
 			List<ArtefatoDTOModel> artefatosModel = new ArrayList<>();
 			for (Artefato artefato : artefatoDAO.listCasoDeUso(idProjeto)) {
-				if(artefato.getArquivo() != null) {
-					artefatosModel.add(
-						new ArtefatoDTOModel(
-							artefato.getNome(),
-							artefato.getDescricao(),
-							artefato.getRequisito() != null ? artefato.getRequisito().getId() : null,
-							artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId() : null,
-							artefato.getArquivo().getId() ,
-							artefato.getId()
-						)
-					);
-				}
+				artefatosModel.add(
+					new ArtefatoDTOModel(
+						artefato.getNome(),
+						artefato.getDescricao(),
+						artefato.getRequisito() != null ? artefato.getRequisito().getId().toString() : null,
+						artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId().toString() : null,
+						artefato.getCaminhoDocumento(),
+						artefato.getId()
+					)
+				);
 			}
 			
 			return artefatosModel;
@@ -216,15 +221,13 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			if(artefato == null)
 				throw new Exception("Artefato não encontrado");
 			
-			if(artefato.getArquivo() == null)
-				throw new Exception("Artefato não contém arquivo anexado");
-			
+			byte[] encoded = Base64.getEncoder().encode(buscarDocumento(artefato.getCaminhoDocumento()));
 			return new ArtefatoDTOModel(
 				artefato.getNome(),
 				artefato.getDescricao(),
-				artefato.getRequisito() != null ? artefato.getRequisito().getId() : null,
-				artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId() : null,
-				artefato.getArquivo().getId() ,
+				artefato.getRequisito() != null ? artefato.getRequisito().getId().toString() : null,
+				artefato.getCasoDeUso() != null ? artefato.getCasoDeUso().getId().toString() : null,
+				"data:" + artefato.getTipoDocumento() + ";base64," + new String(encoded),
 				artefato.getId()
 			);
 		} catch (Exception e) {
@@ -252,30 +255,39 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			if(artefato == null)
 				throw new Exception("Atividade não encontrada");
 
-			Log log = logDAO.persist(Util.logger(criador.getId(), "ALTERAÇÃO"));
-			artefato.setAlteracao(log);
-			artefato.setProjeto(projeto);
-			artefato.setDescricao(a.getDescricao());
-			artefato.setNome(a.getNome());
-			
 			if(a.getIdCasoDeUso() == null && a.getIdRequisito() == null) {
 				throw new Exception("Requisito e Caso de uso não encontrado");
 			}
 
 			Requisito requisito = null;
 			if(a.getIdRequisito() != null) {				
-				requisito = requisitoDAO.find(idProjeto, a.getIdRequisito());
+				requisito = requisitoDAO.find(idProjeto, new Integer(a.getIdRequisito().trim()));
 				artefato.setRequisito(requisito);
 			}
-			
 
 			CasoDeUso casoDeUso = null;
 			if(a.getIdCasoDeUso() != null) {
-				casoDeUso = casoDeUsoDAO.findByIdProjetoAndICasoDeUso(idProjeto, a.getIdCasoDeUso());				
+				casoDeUso = casoDeUsoDAO.findByIdProjetoAndICasoDeUso(idProjeto, new Integer(a.getIdCasoDeUso().trim()));				
 				artefato.setCasoDeUso(casoDeUso);
 			}
+			
+			Log log = logDAO.persist(Util.logger(criador.getId(), "ALTERAÇÃO"));
+			
+			String caminhoCompletoDocumento  = Util.URL_ARQUIVOS + a.getNome() + "." + buscarPrefixoDocumento(a.getTipoDocumento());
+			salvarDocumento(a.getDocumento(), caminhoCompletoDocumento);
+			
+			if(caminhoCompletoDocumento != artefato.getCaminhoDocumento()) {
+				excluirDocumento(artefato.getCaminhoDocumento());
+			}
+	
+			artefato.setTipoDocumento(a.getTipoDocumento().split(" ")[0]);
+			artefato.setCaminhoDocumento(caminhoCompletoDocumento);
+			artefato.setAlteracao(log);
+			artefato.setProjeto(projeto);
+			artefato.setDescricao(a.getDescricao());
+			artefato.setNome(a.getNome());
 
-			artefatoDAO.mergeHalf(idArtefato, artefato);
+			artefatoDAO.mergeFull(artefato);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -296,9 +308,51 @@ public class ArtefatoBC extends AbstractBusiness<Artefato, Integer>{
 			if(artefato == null)
 				throw new Exception("Artefato não encontrada");
 
+			excluirDocumento(artefato.getCaminhoDocumento());
 			artefatoDAO.remove(idArtefato);
 		} catch (Exception e) {
 			throw e;
+		}
+	}
+	
+	private void excluirDocumento(String caminhoDocumento) throws Exception {
+		try {
+			File documento = new File(caminhoDocumento);
+			documento.delete();
+		} catch (Exception e) {
+			throw new Exception("Não foi possivel excluir documento.");
+		}
+	}
+	
+	private void salvarDocumento(byte[] documento, String nomeComTipoDocumento) throws Exception {
+		try ( 
+			FileOutputStream fileOutputStream = new FileOutputStream(new File(nomeComTipoDocumento));
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		) {
+			byteArrayOutputStream.write(documento);
+			fileOutputStream.write(byteArrayOutputStream.toByteArray());
+		} catch (Exception e) {
+			throw new Exception("Falha ao guardar Arquivo - " + nomeComTipoDocumento);
+		}
+	}
+	
+	private byte[] buscarDocumento(String caminhoCompletoDocumento) throws Exception {
+		try {
+			Path fileLocation = Paths.get(caminhoCompletoDocumento);
+			return Files.readAllBytes(fileLocation);
+		} catch (Exception e) {
+			throw new Exception("Falha ao buscar Arquivo - " + caminhoCompletoDocumento);
+		}
+	}
+	
+	private String buscarPrefixoDocumento(String tipoDocumento) throws Exception {
+		try {
+			String regEx = tipoDocumento.substring(tipoDocumento.length() - 4);
+			regEx = regEx.replace(".", "");
+			
+			return regEx;
+		} catch (Exception e) {
+			throw new Exception("Erro ao obter tipo de documento");
 		}
 	}
 }

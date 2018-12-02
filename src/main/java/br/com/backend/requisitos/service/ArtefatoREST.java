@@ -10,9 +10,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.demoiselle.jee.crud.AbstractREST;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.com.backend.requisitos.auth.Auth;
 import br.com.backend.requisitos.bc.ArtefatoBC;
@@ -28,20 +30,22 @@ public class ArtefatoREST extends AbstractREST<Artefato, Integer>{
 
 	@POST
 	@Auth
+	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	public Response create(
 		@PathParam("idUsuario") Integer idUsuario,
 		@PathParam("idProjeto") Integer idProjeto,
-		ArtefatoDTOInterface a
+		@MultipartForm ArtefatoDTOInterface a
 	) {
 		try {
-			return Response.ok(((ArtefatoBC) bc).create(idUsuario, idProjeto, a)).build();
+			((ArtefatoBC) bc).create(idUsuario, idProjeto, a);
+			return Response.ok().build();
 		} catch (Exception e) {
 			return Util.handlerError(e, LOG);
 		}
 	}
 	
 	@GET
-	@Path("/{idAtividade}")
+	@Path("/{idArtefato}")
 	@Auth
 	public Response buscar(
 		@PathParam("idUsuario") Integer idUsuario,
@@ -101,11 +105,12 @@ public class ArtefatoREST extends AbstractREST<Artefato, Integer>{
 	@PUT
 	@Path("/{idArtefato}")
 	@Auth
+	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	public Response alterar(
 		@PathParam("idUsuario") Integer idUsuario,
 		@PathParam("idProjeto") Integer idProjeto,
 		@PathParam("idArtefato") Integer idArtefato,
-		ArtefatoDTOInterface a
+		@MultipartForm ArtefatoDTOInterface a
 	) {
 		try {
 			((ArtefatoBC) bc).alterar(idUsuario, idProjeto, idArtefato, a);
@@ -116,7 +121,7 @@ public class ArtefatoREST extends AbstractREST<Artefato, Integer>{
 	}
 
 	@DELETE
-	@Path("/{idAtividade}")
+	@Path("/{idArtefato}")
 	@Auth
 	public Response excluir(
 		@PathParam("idUsuario") Integer idUsuario,

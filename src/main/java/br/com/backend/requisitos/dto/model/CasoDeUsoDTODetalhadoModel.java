@@ -81,27 +81,25 @@ public class CasoDeUsoDTODetalhadoModel extends CasoDeUsoDTOModel {
 	private List<ArtefatoDTOModel> listArtefatos(List<Artefato> artefatos) {
 		List<ArtefatoDTOModel> artefatosModel = new ArrayList<>();
 		for (Artefato artefato : artefatos) {
-			if(artefato.getArquivo() != null) {
-				Integer idRequisitoArtefato = null;
-				if(artefato.getRequisito() != null)
-					idRequisitoArtefato = artefato.getRequisito().getId();
-							
-				Integer idCasoDeUsoArtefato = null;
-				if(artefato.getCasoDeUso() != null)
-					idCasoDeUsoArtefato = artefato.getCasoDeUso().getId();
+			Integer idRequisitoArtefato = null;
+			if(artefato.getRequisito() != null)
+				idRequisitoArtefato = artefato.getRequisito().getId();
+						
+			Integer idCasoDeUsoArtefato = null;
+			if(artefato.getCasoDeUso() != null)
+				idCasoDeUsoArtefato = artefato.getCasoDeUso().getId();
 
 
-				artefatosModel.add(
-					new ArtefatoDTOModel(
-						artefato.getNome(),
-						artefato.getDescricao(),
-						idRequisitoArtefato,
-						idCasoDeUsoArtefato,
-						artefato.getArquivo().getId() ,
-						artefato.getId()
-					)
-				);
-			}
+			artefatosModel.add(
+				new ArtefatoDTOModel(
+					artefato.getNome(),
+					artefato.getDescricao(),
+					idRequisitoArtefato.toString(),
+					idCasoDeUsoArtefato.toString(),
+					artefato.getCaminhoDocumento(),
+					artefato.getId()
+				)
+			);
 		}
 		
 		return artefatosModel;

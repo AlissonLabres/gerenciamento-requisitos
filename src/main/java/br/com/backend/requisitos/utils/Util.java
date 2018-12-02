@@ -24,6 +24,8 @@ import io.swagger.util.Json;
 
 public class Util {
 	
+	public static String URL_ARQUIVOS = "/home/alisson/GDR-Arquivos/"; 
+	
 	public Util() {
 	}
 

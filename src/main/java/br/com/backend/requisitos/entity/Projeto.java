@@ -21,9 +21,12 @@ import br.com.backend.requisitos.enums.Status;
 
 @Entity
 @NamedQueries({
-		@javax.persistence.NamedQuery(name = "Projeto.findByAll", query = "SELECT p FROM Projeto p INNER JOIN p.integrantes i INNER JOIN i.usuario u WHERE u.id = :idUsuario"),
-		@javax.persistence.NamedQuery(name = "Projeto.find", query = "SELECT p FROM Projeto p INNER JOIN p.integrantes i INNER JOIN i.usuario u WHERE u.id = :idUsuario AND p.id = :idProjeto"),
-		@javax.persistence.NamedQuery(name = "Projeto.findByName", query = "SELECT p FROM Projeto p INNER JOIN p.integrantes i INNER JOIN i.usuario u WHERE u.id = :idUsuario AND p.nome = :nomeProjeto") })
+	@javax.persistence.NamedQuery(name = "Projeto.findByAll", query = "SELECT p FROM Projeto p INNER JOIN p.integrantes i INNER JOIN i.usuario u WHERE u.id = :idUsuario"),
+	@javax.persistence.NamedQuery(name = "Projeto.findIntegrantes", query = "SELECT i FROM Projeto p INNER JOIN p.integrantes i INNER JOIN i.usuario u WHERE p.id = :idProjeto"), //Jhony
+	@javax.persistence.NamedQuery(name = "Projeto.findRequisitos", query = "SELECT r FROM Requisito r INNER JOIN r.projeto p WHERE p.id = :idProjeto"), //Jhony
+	@javax.persistence.NamedQuery(name = "Projeto.findCasosDeUso", query = "SELECT c FROM CasoDeUso c INNER JOIN c.projeto p WHERE p.id = :idProjeto"), //Jhony
+	@javax.persistence.NamedQuery(name = "Projeto.find", query = "SELECT p FROM Projeto p INNER JOIN p.integrantes i INNER JOIN i.usuario u WHERE u.id = :idUsuario AND p.id = :idProjeto"),
+	@javax.persistence.NamedQuery(name = "Projeto.findByName", query = "SELECT p FROM Projeto p INNER JOIN p.integrantes i INNER JOIN i.usuario u WHERE u.id = :idUsuario AND p.nome = :nomeProjeto") })
 public class Projeto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
